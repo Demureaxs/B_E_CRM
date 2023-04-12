@@ -49,6 +49,26 @@ router.post(
 
     const { type, vendor, tasks }: Partial<IChecklistField> = req.body;
 
+    // the mongoose version
+    const updateObject: any = { $push: { checklist: {} } };
+
+    if (type) updateObject.$push.checklist.type = type;
+    if (vendor) updateObject.$push.checklist.vendor = vendor;
+    if (tasks) updateObject.$push.checklist.tasks = tasks;
+
+    const updateWedding = await Wedding.findOneAndUpdate(
+      { _id: weddingId },
+      updateObject,
+      { new: true }
+    );
+
+    if (!updateWedding) {
+      return res.status(404).json({ error: 'Wedding not found' });
+    }
+
+    res.status(200).json(updateWedding);
+
+    /*
     const wedding = await Wedding.findById(weddingId);
 
     if (!wedding) {
@@ -61,8 +81,9 @@ router.post(
       tasks: tasks!,
     });
 
-    await wedding.save();
-    res.status(200).json(wedding);
+    await wedding.save(); */
+
+    // res.status(200).json(wedding);
   })
 );
 
@@ -456,23 +477,101 @@ router.post(
 
 router.put(
   '/:id/checklist/:checklistId/tasks/:taskId/todos/:todoId',
-  (req, res) => {
-    res
-      .status(200)
-      .send(
-        '/api/v1/weddings/:id/checklist/:checklistId/tasks/:taskId/todos/:todoId - updateTodo'
-      );
-  }
+
+  catchAsync(async (req: Request, res: Response) => {
+    const weddingId = req.params.id;
+    const checklistId = req.params.checklistId;
+    const taskId = req.params.taskId;
+    const todoId = req.params.todoId;
+
+    const { todo, date, deadline, done }: Partial<ITodo> = req.body;
+
+    const wedding = await Wedding.findById(weddingId);
+
+    if (!wedding) {
+      return res.status(404).json({ error: 'Wedding not found' });
+    }
+
+    const checklistItem = wedding.checklist.find(
+      (item) => item._id?.toString() === checklistId
+    );
+
+    if (!checklistItem) {
+      return res.status(404).json({ error: 'Checklist not found' });
+    }
+
+    const taskItem = checklistItem.tasks.find(
+      (item) => item._id?.toString() === taskId
+    );
+
+    if (!taskItem) {
+      return res.status(404).json({ error: 'Task not found' });
+    }
+
+    const todoItem = taskItem.todos.find(
+      (item) => item._id?.toString() === todoId
+    );
+
+    if (!todoItem) {
+      return res.status(404).json({ error: 'Todo not found' });
+    }
+
+    if (todo) todoItem.todo = todo;
+    if (date) todoItem.date = date;
+    if (deadline) todoItem.deadline = deadline;
+    if (done) todoItem.done = done;
+
+    await wedding.save();
+
+    res.status(200).json(wedding);
+  })
 );
 router.delete(
   '/:id/checklist/:checklistId/tasks/:taskId/todos/:todoId',
-  (req, res) => {
-    res
-      .status(200)
-      .send(
-        '/api/v1/weddings/:id/checklist/:checklistId/tasks/:taskId/todos/:todoId - deleteTodo'
-      );
-  }
+  catchAsync(async (req: Request, res: Response) => {
+    const weddingId = req.params.id;
+    const checklistId = req.params.checklistId;
+    const taskId = req.params.taskId;
+    const todoId = req.params.todoId;
+
+    const wedding = await Wedding.findById(weddingId);
+
+    if (!wedding) {
+      return res.status(404).json({ error: 'Wedding not found' });
+    }
+
+    const checklistItem = wedding.checklist.find(
+      (item) => item._id?.toString() === checklistId
+    );
+
+    if (!checklistItem) {
+      return res.status(404).json({ error: 'Checklist not found' });
+    }
+
+    const taskItem = checklistItem.tasks.find(
+      (item) => item._id?.toString() === taskId
+    );
+
+    if (!taskItem) {
+      return res.status(404).json({ error: 'Task not found' });
+    }
+
+    const todoItem = taskItem.todos.find(
+      (item) => item._id?.toString() === todoId
+    );
+
+    if (!todoItem) {
+      return res.status(404).json({ error: 'Todo not found' });
+    }
+
+    taskItem.todos = taskItem.todos.filter(
+      (item) => item._id?.toString() !== todoId
+    );
+
+    await wedding.save();
+
+    res.status(200).json(wedding);
+  })
 );
 
 export default router;
