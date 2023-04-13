@@ -2,15 +2,21 @@ import { WeddingsProvider } from './context/WeddingsContext';
 import { useEffect, useState } from 'preact/hooks';
 import { Suspense, lazy } from 'preact/compat';
 
+import SideNav from './common/Sidenav/SideNav';
+import Footer from './common/Footer/Footer';
+
+import AddWedding from './scenes/Add Wedding/AddWedding';
+import Overview from './scenes/Overview/Overview';
+import WeddingModal from './scenes/WeddingModal/WeddingModal';
+import PaymentTimeline from './scenes/PaymentTimeline/PaymentTimeline';
+import Tasks from './scenes/Tasks/Tasks';
+import Weddings from './scenes/Weddings/Weddings';
+
 export function App() {
   return (
     <WeddingsProvider>
       <main className='flex relative bg-base-100 h-screen'>
-        <div>
-          <h1 className='text-5xl font-semibold'>
-            Right are you ready son, we are going to smash this!
-          </h1>
-        </div>
+        <SideNav />
       </main>
     </WeddingsProvider>
   );
