@@ -24,33 +24,36 @@ router.get('/:id/checklist', (0, catchAsync_1.catchAsync)(async (req, res) => {
 router.post('/:id/checklist/', (0, catchAsync_1.catchAsync)(async (req, res) => {
     const weddingId = req.params.id;
     const { type, vendor, tasks } = req.body;
-    // the mongoose version
-    const updateObject = { $push: { checklist: {} } };
-    if (type)
-        updateObject.$push.checklist.type = type;
-    if (vendor)
-        updateObject.$push.checklist.vendor = vendor;
-    if (tasks)
-        updateObject.$push.checklist.tasks = tasks;
-    const updateWedding = await weddingsModel_1.default.findOneAndUpdate({ _id: weddingId }, updateObject, { new: true });
-    if (!updateWedding) {
-        return res.status(404).json({ error: 'Wedding not found' });
-    }
-    res.status(200).json(updateWedding);
     /*
-    const wedding = await Wedding.findById(weddingId);
+    // the mongoose version
+    const updateObject: any = { $push: { checklist: {} } };
 
-    if (!wedding) {
+    if (type) updateObject.$push.checklist.type = type;
+    if (vendor) updateObject.$push.checklist.vendor = vendor;
+    if (tasks) updateObject.$push.checklist.tasks = tasks;
+
+    const updateWedding = await Wedding.findOneAndUpdate(
+      { _id: weddingId },
+      updateObject,
+      { new: true }
+    );
+
+    if (!updateWedding) {
       return res.status(404).json({ error: 'Wedding not found' });
     }
 
+    res.status(200).json(updateWedding);
+    */
+    const wedding = await weddingsModel_1.default.findById(weddingId);
+    if (!wedding) {
+        return res.status(404).json({ error: 'Wedding not found' });
+    }
     wedding.checklist.push({
-      type: type!,
-      vendor: vendor!,
-      tasks: tasks!,
+        type: type,
+        vendor: vendor,
+        tasks: tasks,
     });
-
-    await wedding.save(); */
+    await wedding.save();
     // res.status(200).json(wedding);
 }));
 router.get('/:id/checklist/:checklistId', (0, catchAsync_1.catchAsync)(async (req, res) => {

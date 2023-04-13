@@ -4,10 +4,10 @@ import Wedding from '../models/weddingsModel';
 import mongoose from 'mongoose';
 
 export async function getWeddings(req: Request, res: Response): Promise<void> {
-
-  const weddings = await Wedding.find({});
+  const weddings = await Wedding.find({}).select(
+    '_id agent name email date venue guests foodAndBeverage decoration production photographer videographer vendorProgress'
+  );
   res.status(200).json(weddings);
-
 }
 
 export async function getWedding(
@@ -59,7 +59,7 @@ export async function createWedding(
     checklist,
     payments,
   });
- 
+
   await newWedding.save();
   res.json(newWedding);
 }
@@ -92,24 +92,23 @@ export async function updateWedding(
     return res.status(400).json({ error: 'Wedding not found' });
   }
 
-  if(agent) wedding.agent = agent;
-  if(name) wedding.name = name;
-  if(email) wedding.email = email;
-  if(date) wedding.date = date;
-  if(venue) wedding.venue = venue;
-  if(guests) wedding.guests = guests;
-  if(foodAndBeverage) wedding.foodAndBeverage = foodAndBeverage;
-  if(decoration) wedding.decoration = decoration;
-  if(production) wedding.production = production;
-  if(photographer) wedding.photographer = photographer;
-  if(videographer) wedding.videographer = videographer;
-  if(vendorProgress) wedding.vendorProgress = vendorProgress;
-  if(checklist) wedding.checklist = checklist;
-  if(payments) wedding.payments = payments;
+  if (agent) wedding.agent = agent;
+  if (name) wedding.name = name;
+  if (email) wedding.email = email;
+  if (date) wedding.date = date;
+  if (venue) wedding.venue = venue;
+  if (guests) wedding.guests = guests;
+  if (foodAndBeverage) wedding.foodAndBeverage = foodAndBeverage;
+  if (decoration) wedding.decoration = decoration;
+  if (production) wedding.production = production;
+  if (photographer) wedding.photographer = photographer;
+  if (videographer) wedding.videographer = videographer;
+  if (vendorProgress) wedding.vendorProgress = vendorProgress;
+  if (checklist) wedding.checklist = checklist;
+  if (payments) wedding.payments = payments;
 
   await wedding.save();
   res.status(200).json(wedding);
-
 }
 
 export async function deleteWedding(req: Request, res: Response) {
@@ -120,7 +119,6 @@ export async function deleteWedding(req: Request, res: Response) {
   if (!wedding) {
     return res.status(400).json({ error: 'Wedding not found' });
   }
-  
-  res.status(200).json({ message: 'Successfully Deleted' });
 
+  res.status(200).json({ message: 'Successfully Deleted' });
 }

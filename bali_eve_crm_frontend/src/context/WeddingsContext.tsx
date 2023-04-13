@@ -1,40 +1,52 @@
 import { createContext } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 
-export interface IWedding {
+export interface ITodo {
+  _id?: string;
+  todo: string;
+  date?: Date;
+  deadline?: Date;
+  done?: boolean;
+}
+
+export interface ITaskItem {
+  _id?: string;
+  task: string;
+  completed: boolean;
+  todos: ITodo[];
+}
+
+export interface IChecklistField {
+  _id?: string;
+  type: string;
+  vendor: string;
+  tasks: ITaskItem[];
+}
+
+interface IPayment {
+  date: Date;
+  amount: number;
+  for: string;
+  description?: string;
+  paymentMethod: string;
+}
+
+export interface IWedding extends Document {
   _id: string;
   agent: string;
   name: string;
   email: string;
-  date: string;
+  date: Date;
   venue: string;
-  guests: string;
+  guests: number;
   foodAndBeverage: string;
   decoration: string;
   production: string;
   photographer: string;
   videographer: string;
   vendorProgress: string;
-  checklist: {
-    type: string;
-    vendor: string;
-    tasks: {
-      task: string;
-      completed: boolean;
-      vendor?: string; // optional vendor property for some checklist items
-    }[];
-  }[];
-  payments: {
-    date: string;
-    amount: number;
-  }[];
-  todos: {
-    task: string;
-    dateAdded: string;
-    deadline: string;
-    done: boolean;
-    default: boolean;
-  }[];
+  checklist: IChecklistField[];
+  payments: IPayment[];
 }
 
 interface IUser {
@@ -70,29 +82,29 @@ export function WeddingsProvider(props: any) {
   const [allWeddings, setAllWeddings] = useState<IWedding[]>([]);
   const [wedding, setWedding] = useState<IWedding | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<IUser | null>(null);
+
+  // useEffect(() => {
+  //   async function fetchUser() {
+  //     const res = await fetch('http://192.168.18.7:8000/api/v1/current_user');
+  //     const user = await res.json();
+  //     setUser(user);
+  //   }
+  //   fetchUser();
+  // }, []);
 
   useEffect(() => {
-    async function fetchUser() {
-      const response = await fetch('http://localhost:8000/api/v1/current_user');
-      const data = await response.json();
-      setUser(data);
-    }
-    fetchUser();
-  }, []);
+    async function fetchWeddings() {
+      const response = await fetch('http://192.168.18.7:8000/api/v1/weddings');
 
-  useEffect(() => {
-    async function fetchData() {
-      const response = await fetch('http://localhost:8000/api/v1/weddings')
-      // const response = await fetch('/data/mockData.json');
       const data = await response.json();
       setAllWeddings(data);
     }
-    fetchData();
+    fetchWeddings();
   }, []);
 
-  async function refetchData() {
-    const response = await fetch('/data/mockData.json');
+  async function fetchWeddings() {
+    const response = await fetch('http://192.168.18.7:8000/api/v1/weddings');
     const data = await response.json();
     setAllWeddings(data);
   }
@@ -105,7 +117,7 @@ export function WeddingsProvider(props: any) {
     showModal,
     setShowModal,
     user,
-    refetchData,
+    refetchData: fetchWeddings,
   };
 
   return (

@@ -49,6 +49,7 @@ router.post(
 
     const { type, vendor, tasks }: Partial<IChecklistField> = req.body;
 
+    /*
     // the mongoose version
     const updateObject: any = { $push: { checklist: {} } };
 
@@ -67,8 +68,8 @@ router.post(
     }
 
     res.status(200).json(updateWedding);
-
-    /*
+    */
+    
     const wedding = await Wedding.findById(weddingId);
 
     if (!wedding) {
@@ -81,7 +82,7 @@ router.post(
       tasks: tasks!,
     });
 
-    await wedding.save(); */
+    await wedding.save();
 
     // res.status(200).json(wedding);
   })

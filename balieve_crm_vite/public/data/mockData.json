@@ -1,12 +1,11 @@
 [
   {
-    "_id": "6789123456",
     "agent": "Karen Lee",
-    "name": "David & Emily",
-    "email": "davidandemily@example.com",
-    "date": "2023-11-05T00:00:00.000Z",
-    "venue": "The Barn at Willow Creek",
-    "guests": "400",
+    "name": "The man who mores chickens",
+    "email": "themanWhoEatsPizza@gmail.com",
+    "date": "2023-08-19T00:00:00.000Z",
+    "venue": "The Garden Venue",
+    "guests": 500,
     "foodAndBeverage": "ABC Set Menu",
     "decoration": "Rustic and autumn-themed decor",
     "production": "I Love Lights",
@@ -20,15 +19,45 @@
         "tasks": [
           {
             "task": "Venue Checking",
-            "completed": "true"
+            "completed": true,
+            "todos":[
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": true,
+                "todo": "Schedule Venue Checking"
+              },
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": true,
+                "todo": "Confirm Venue Availability"
+              }
+            ]
           },
           {
             "task": "First Payment",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Send receipt to Finance"
+              }
+            ]
           },
           {
             "task": "Final Payment",
-            "completed": "true"
+            "completed": false,
+            "todos":[
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Send receipt to Finance"
+              }
+            ]
           }
         ]
       },
@@ -38,31 +67,147 @@
         "tasks": [
           {
             "task": "Wedding Dinner",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Menu"
+              },
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Food Tasting"
+              },
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Down Payment Wedding Dinner"
+              },
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Final Payment Wedding Dinner"
+              }
+            ]
           },
           {
             "task": "Food Tasting",
-            "completed": "true"
+            "completed": false,
+            "todos":[
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Food Tasting"
+              }
+            ]
           },
           {
             "task": "Down Payment Wedding Dinner",
-            "completed": "true"
+            "completed": false,
+            "todos":[
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Down Payment Wedding Dinner"
+              }
+            ]
           },
           {
             "task": "Final Payment Wedding Dinner",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Final Payment Wedding Dinner"
+              }
+            ]
           },
           {
             "task": "Makanan Tambahan",
-            "completed": "true"
+            "completed": true,
+            "todos":[
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": true,
+                "todo": "Confirm Menu"
+              },
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": true,
+                "todo": "Confirm Food Tasting"
+              },
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": true,
+                "todo": "Confirm Down Payment Makanan Tambahan"
+              },
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": true,
+                "todo": "Confirm Final Payment Makanan Tambahan"
+              }
+            ]
           },
           {
             "task": "Payment Makanan Tambahan",
-            "completed": "true"
+            "completed": false,
+            "todos":[
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Down Payment Makanan Tambahan"
+              },
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Final Payment Makanan Tambahan"
+              }
+            ]
           },
           {
             "task": "Tea Ceremony Food",
-            "completed": "true"
+            "completed": false,
+            "todos":[
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Menu"
+              },
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Food Tasting"
+              },
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Down Payment Tea Ceremony Food"
+              },
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Final Payment Tea Ceremony Food"
+              }
+            ]
           }
         ]
       },
@@ -72,31 +217,87 @@
         "tasks": [
           {
             "task": "Mood Board Concept",
-            "completed": "true"
+            "completed": true,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": true,
+                "todo": "Confirm Mood Board Concept"
+              }
+            ]
           },
           {
             "task": "Confirm Vendor",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Vendor"
+              }
+            ]
           },
           {
             "task": "First Payment",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm First Payment"
+              }
+            ]
           },
           {
             "task": "Moodboard Final",
-            "completed": "true"
+            "completed": true,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": true,
+                "todo": "Confirm Moodboard Final"
+              }
+            ]
           },
           {
             "task": "Decoration Layout",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Decoration Layout"
+              }
+            ]
           },
           {
             "task": "Seating Arrangement",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Seating Arrangement"
+              }
+            ]
           },
           {
             "task": "Decoration Final Payment",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Final Payment"
+              }
+            ]
           }
         ]
       },
@@ -106,15 +307,39 @@
         "tasks": [
           {
             "task": "Mood Board Concept",
-            "completed": "true"
+            "completed": true,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": true,
+                "todo": "Confirm Mood Board Concept"
+              }
+            ]
           },
           {
             "task": "Production Quote",
-            "completed": "true"
+            "completed": true,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": true,
+                "todo": "Confirm Production Quote"
+              }
+            ]
           },
           {
             "task": "Effects (pyro)",
-            "completed": "true"
+            "completed": true,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": true,
+                "todo": "Confirm Effects (pyro)"
+              }
+            ]
           }
         ]
       },
@@ -124,15 +349,39 @@
         "tasks": [
           {
             "task": "Down Payment MC",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Down Payment MC"
+              }
+            ]
           },
           {
             "task": "Forward List Bride and Groom",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Forward List Bride and Groom"
+              }
+            ]
           },
           {
             "task": "Full Payment MC",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Full Payment MC"
+              }
+            ]
           }
         ]
       },
@@ -142,31 +391,87 @@
         "tasks": [
           {
             "task": "Share List Document",
-            "completed": "true"
+            "completed": true,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": true,
+                "todo": "Confirm Share List Document"
+              }
+            ]
           },
           {
             "task": "Priest / Celebrant",
-            "completed": "true"
+            "completed": true,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": true,
+                "todo": "Confirm Priest / Celebrant"
+              }
+            ]
           },
           {
             "task": "Legal / Non-legal",
-            "completed": "true"
+            "completed": true,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": true,
+                "todo": "Confirm Legal / Non-legal"
+              }
+            ]
           },
           {
             "task": "Choir / Chorniles",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Choir / Chorniles"
+              }
+            ]
           },
           {
             "task": "Down Payment Priest / Celebrant",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Down Payment Priest / Celebrant"
+              }
+            ]
           },
           {
             "task": "Submit Documents",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Submit Documents"
+              }
+            ]
           },
           {
             "task": "Full Payment Priest / Celebrant",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Full Payment Priest / Celebrant"
+              }
+            ]
           }
         ]
       },
@@ -176,139 +481,359 @@
         "tasks": [
           {
             "task": "Share Playlists",
-            "completed": "true"
+            "completed": true,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": true,
+                "todo": "Confirm Share Playlists"
+              }
+            ]
           },
           {
             "task": "Down Payment",
-            "completed": "true"
+            "completed": true,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": true,
+                "todo": "Confirm Down Payment"
+              }
+            ]
           },
           {
             "task": "Full Payment",
-            "completed": "true"
+            "completed": true,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": true,
+                "todo": "Confirm Full Payment"
+              }
+            ]
           }
         ]
       },
       {
         "type": "Misc Talent",
-        "vendor": "",
+        "vendor": "Miscellaneous",
         "tasks": [
           {
             "task": "Share Playlist",
-            "completed": "true"
+            "completed": true,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": true,
+                "todo": "Confirm Share Playlist"
+              },
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": true,
+                "todo": "Confirm Share Playlist"
+              }
+            ]
           },
           {
             "task": "Strings For Ceremony",
             "vendor": "Bali Primavera",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Strings For Ceremony"
+              }
+            ]
           },
           {
             "task": "Live Streaming",
             "vendor": "AG Production",
-            "completed": "true"
+            "completed": true,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": true,
+                "todo": "Confirm Live Streaming"
+              }
+            ]
           },
           {
             "task": "Down Payment",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Down Payment"
+              }
+            ]
           },
           {
             "task": "Full Payment",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Full Payment"
+              }
+            ]
           }
         ]
       },
       {
         "type": "Make Up Artist",
-        "vendor": "",
+        "vendor": "Miscellaneous",
         "tasks": [
           {
             "task": "Share List",
-            "completed": "true"
+            "completed": true,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": true,
+                "todo": "Confirm Share List"
+              }
+            ]
           },
           {
             "task": "Bride By",
             "vendor": "Own Arrangement",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Bride By"
+              }
+            ]
           },
           {
             "task": "Sister By",
             "vendor": "Own Arrangement",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Sister By"
+              }
+            ]
+            
           },
           {
             "task": "Bridemaids By",
             "vendor": "Cempaka Team (3 Persons)",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Bridemaids By"
+              }
+            ]
+            
           },
           {
             "task": "Brides Mother",
             "vendor": "Loressa",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Brides Mother"
+              }
+            ]
+            
           },
           {
             "task": "Groom Mother",
             "vendor": "Own Arrangement",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Groom Mother"
+              }
+            ]
+            
           },
           {
             "task": "Down Payment",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Down Payment"
+              }
+            ]
+            
           },
           {
             "task": "Full Payment",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Full Payment"
+              }
+            ]
+            
           }
         ]
       },
       {
         "type": "Gown And Suits",
-        "vendor": "",
+        "vendor": "Miscellaneous",
         "tasks": [
           {
             "task": "Share List",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Share List"
+              }
+            ]
           },
           {
             "task": "Bride By",
             "vendor": "Yefta",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Bride By"
+              }
+            ]      
           },
           {
             "task": "Mothers",
             "vendor": "Own Arrangement",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Mothers"
+              }
+            ]
           },
           {
             "task": "Sisters",
             "vendor": "Own Arrangement",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Sisters"
+              }
+            ]
           },
           {
             "task": "Bridemaids",
             "vendor": "Own Arrangement",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Bridemaids"
+              }
+            ]
           },
           {
             "task": "Groom",
             "vendor": "Own Arrangement",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Groom"
+              }
+            ]
           },
           {
             "task": "Fathers",
             "vendor": "Own Arrangement",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Fathers"
+              }
+            ]
           },
           {
             "task": "Groomsman",
             "vendor": "Own Arrangement",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Groomsman"
+              }
+            ]
           },
           {
             "task": "Down Payment",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Down Payment"
+              }
+            ]
           },
           {
             "task": "Full Payment",
-            "completed": "true"
+            "completed": false,
+            "todos": [
+              {
+                "date": "2023-08-21T00:00:00.000Z",
+                "deadline": "2023-09-01T00:00:00.000Z",
+                "done": false,
+                "todo": "Confirm Full Payment"
+              }
+            ]
           }
         ]
       },
@@ -318,15 +843,15 @@
         "tasks": [
           {
             "task": "Share Photos",
-            "completed": "true"
+            "completed": false
           },
           {
             "task": "Down Payment",
-            "completed": "true"
+            "completed": false
           },
           {
             "task": "Full Payment",
-            "completed": "true"
+            "completed": false
           }
         ]
       },
@@ -336,15 +861,15 @@
         "tasks": [
           {
             "task": "Share List",
-            "completed": "true"
+            "completed": false
           },
           {
             "task": "Down Payment",
-            "completed": "true"
+            "completed": false
           },
           {
             "task": "Full Payment",
-            "completed": "true"
+            "completed": false
           }
         ]
       },
@@ -354,45 +879,45 @@
         "tasks": [
           {
             "task": "Wedding Cake",
-            "completed": "true"
+            "completed": false
           },
           {
             "task": "Share Photo Preference",
-            "completed": "true"
+            "completed": false
           },
           {
             "task": "Down Payment",
-            "completed": "true"
+            "completed": false
           },
           {
             "task": "Full Payment",
-            "completed": "true"
+            "completed": false
           }
         ]
       },
       {
         "type": "RSVP",
-        "vendor": "",
+        "vendor": "Miscellaneous",
         "tasks": [
           {
             "task": "Whatsapp and Name List",
-            "completed": "true"
+            "completed": false
           },
           {
             "task": "Food Preferences",
-            "completed": "true"
+            "completed": false
           },
           {
             "task": "Hours Highlight Groom",
-            "completed": "true"
+            "completed": false
           },
           {
             "task": "Hours Highlight Bridal Party",
-            "completed": "true"
+            "completed": false
           },
           {
             "task": "Send RSVP",
-            "completed": "true"
+            "completed": false
           }
         ]
       },
@@ -402,23 +927,23 @@
         "tasks": [
           {
             "task": "Price Per Room",
-            "completed": "true"
+            "completed": false
           },
           {
             "task": "Price List",
-            "completed": "true"
+            "completed": false
           },
           {
             "task": "Guest List",
-            "completed": "true"
+            "completed": false
           },
           {
             "task": "Down Payment",
-            "completed": "true"
+            "completed": false
           },
           {
             "task": "Full Payment",
-            "completed": "true"
+            "completed": false
           }
         ]
       },
@@ -428,71 +953,48 @@
         "tasks": [
           {
             "task": "Vehicle List",
-            "completed": "true"
+            "completed": false
           },
           {
             "task": "Share Price List",
-            "completed": "true"
+            "completed": false
           },
           {
             "task": "Down Payment ",
-            "completed": "true"
+            "completed": false
           },
           {
             "task": "Full Payment",
-            "completed": "true"
+            "completed": false
           }
         ]
       },
       {
         "type": "Staff",
-        "vendor": "",
+        "vendor": "Miscellaneous",
         "tasks": [
           {
             "task": "Manpower List",
-            "completed": "true"
+            "completed": false
           }
         ]
       }
     ],
     "payments": [
       {
-        "date": "2023-05-15T00:00:00.000Z",
-        "amount": 1500
+        "date": "2023-08-31T00:00:00.000Z",
+        "amount": 5000,
+        "for": "Photography",
+        "description": "50% deposit",
+        "paymentMethod": "Bank Transfer"
+ 
       },
       {
-        "date": "2023-09-15T00:00:00.000Z",
-        "amount": 3000
-      }
-    ],
-    "todos": [
-      {
-        "task": "Send out invitations",
-        "dateAdded": "2023-06-01T00:00:00.000Z",
-        "deadline": "2023-08-01T00:00:00.000Z",
-        "done": false,
-        "default": false
-      },
-      {
-        "task": "Confirm menu with caterer",
-        "dateAdded": "2023-03-15T00:00:00.000Z",
-        "deadline": "2023-10-15T00:00:00.000Z",
-        "done": true,
-        "default": false
-      },
-      {
-        "task": "Finalize ceremony music",
-        "dateAdded": "2023-02-01T00:00:00.000Z",
-        "deadline": "2023-10-15T00:00:00.000Z",
-        "done": false,
-        "default": false
-      },
-      {
-        "task": "Book wedding day transportation",
-        "dateAdded": "2023-01-01T00:00:00.000Z",
-        "deadline": "2023-11-01T00:00:00.000Z",
-        "done": false,
-        "default": false
+        "date": "2023-09-30T00:00:00.000Z",
+        "amount": 5000,
+        "for": "Photography",
+        "description": "",
+        "paymentMethod": "Bank Transfer"
       }
     ]
   },
@@ -967,13 +1469,7 @@
         "task": "Choose a cake design",
         "dateAdded": "2023-03-01T00:00:00.000Z",
         "deadline": "2023-06-01T00:00:00.000Z",
-        "done": false
-      },
-      {
-        "task": "Finalize ceremony music",
-        "dateAdded": "2023-02-15T00:00:00.000Z",
-        "deadline": "2023-07-15T00:00:00.000Z",
-        "done": false
+        "done": false      
       },
       {
         "task": "Book wedding day transportation",
