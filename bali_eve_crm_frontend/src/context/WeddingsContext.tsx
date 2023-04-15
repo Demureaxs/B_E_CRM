@@ -36,7 +36,7 @@ export interface IWedding extends Document {
   agent: string;
   name: string;
   email: string;
-  date: Date;
+  date: string;
   venue: string;
   guests: number;
   foodAndBeverage: string;
@@ -98,6 +98,7 @@ export function WeddingsProvider(props: any) {
       const response = await fetch('http://192.168.18.7:8000/api/v1/weddings');
 
       const data = await response.json();
+      console.log(data);
       setAllWeddings(data);
     }
     fetchWeddings();

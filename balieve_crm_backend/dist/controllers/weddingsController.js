@@ -6,8 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteWedding = exports.updateWedding = exports.createWedding = exports.getWedding = exports.getWeddings = void 0;
 const weddingsModel_1 = __importDefault(require("../models/weddingsModel"));
 async function getWeddings(req, res) {
-    const weddings = await weddingsModel_1.default.find({}).select('_id agent name email date venue guests foodAndBeverage decoration production photographer videographer vendorProgress');
-    res.status(200).json(weddings);
+    const query = req.query;
+    if (Object.keys(query).length === 0) {
+        const weddings = await weddingsModel_1.default.find({});
+        res.status(200).json(weddings);
+        return;
+    }
 }
 exports.getWeddings = getWeddings;
 async function getWedding(req, res, next) {

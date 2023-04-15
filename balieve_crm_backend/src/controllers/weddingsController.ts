@@ -4,10 +4,12 @@ import Wedding from '../models/weddingsModel';
 import mongoose from 'mongoose';
 
 export async function getWeddings(req: Request, res: Response): Promise<void> {
-  const weddings = await Wedding.find({}).select(
-    '_id agent name email date venue guests foodAndBeverage decoration production photographer videographer vendorProgress'
-  );
-  res.status(200).json(weddings);
+  const query = req.query;
+  if (Object.keys(query).length === 0) {
+    const weddings = await Wedding.find({});
+    res.status(200).json(weddings);
+    return;
+  }
 }
 
 export async function getWedding(
