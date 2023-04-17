@@ -10,7 +10,7 @@ function Overview() {
   const { allWeddings, setAllWeddings } = useContext(WeddingContext);
 
   return (
-    <div className='h-full w-full space-y-6 overflow-y-scroll'>
+    <div className='h-full w-full space-y-6'>
       {/* Task Row */}
       <div className='grid grid-rows-4 grid-cols-1 md:grid-rows-2 md:grid-cols-2 xl:grid-rows-1 xl:grid-cols-4 gap-6 h-fit'>
         {/* Metrics */}

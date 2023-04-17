@@ -1,4 +1,6 @@
 export function formatDate(date: string) {
+  if (!date || isNaN(new Date(date).getTime())) return '';
+
   const options = {
     weekday: 'long',
     day: 'numeric',
@@ -16,6 +18,7 @@ export function formatDateToShortForm(date: string) {
   const month = String(shortDate.getMonth() + 1).padStart(2, '0');
   const day = String(shortDate.getDate()).padStart(2, '0');
 
+  // need to fix the formatting of this
   return `${year}-${month}-${day}`;
 }
 

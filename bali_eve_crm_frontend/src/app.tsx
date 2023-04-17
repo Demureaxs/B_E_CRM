@@ -1,5 +1,5 @@
 import { WeddingsProvider } from './context/WeddingsContext';
-import { useEffect, useState } from 'preact/hooks';
+import { useState } from 'preact/hooks';
 import { Suspense, lazy } from 'preact/compat';
 
 import InlineNav from './common/InlineNav/InlineNav';
@@ -29,13 +29,13 @@ export function App() {
           <div className='flex-1 flex flex-col'>
             <Suspense fallback={<div>Loading...</div>}>
               <InlineNav name={navTarget} imageLink='/img/BaliEveLogo.webp' />
-              <div className='h-full p-6 bg-base-200'>
+              <div className='h-full p-6 bg-base-200 overflow-hidden overflow-y-scroll scrollbar-none'>
                 {navTarget === 'Overview' && <Overview />}
                 {navTarget === 'Weddings' && <WeddingsDashboard />}
                 {navTarget === 'Tasks' && <Tasks />}
                 {navTarget === 'Payments' && <PaymentTimeline />}
-                {navTarget === 'AddWedding' && <AddWedding />}
-                {navTarget === 'EditWedding' && <EditWedding />}
+                {navTarget === 'Add_Wedding' && <AddWedding />}
+                {navTarget === 'Edit_Wedding' && <EditWedding />}
               </div>
             </Suspense>
           </div>

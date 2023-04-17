@@ -36,7 +36,7 @@ function SideNavLink({
   setNavTarget: any;
 }) {
   return (
-    <li onClick={() => setNavTarget(name.replace(' ', ''))}>
+    <li onClick={() => setNavTarget(name.replace(' ', '_'))}>
       <h3>{name}</h3>
     </li>
   );
@@ -50,7 +50,7 @@ function CompanyInfo() {
       </div>
 
       <div>
-        <h1 className='font-bold'>Bali-Eve Dashboard</h1>
+        <h1 className='font-bold'>Bali Eve Dashboard</h1>
         <p>Info@balieveplanner.com</p>
       </div>
     </div>

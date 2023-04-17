@@ -69,7 +69,7 @@ router.post(
 
     res.status(200).json(updateWedding);
     */
-    
+
     const wedding = await Wedding.findById(weddingId);
 
     if (!wedding) {
@@ -84,7 +84,7 @@ router.post(
 
     await wedding.save();
 
-    // res.status(200).json(wedding);
+    res.status(200).json(wedding);
   })
 );
 

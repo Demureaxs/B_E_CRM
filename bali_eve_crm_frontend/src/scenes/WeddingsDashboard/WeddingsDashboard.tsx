@@ -1,9 +1,10 @@
-import { useContext } from 'preact/hooks';
+import { useState, useContext } from 'preact/hooks';
 import { formatDate } from '../../common/utilities/utilityFunctions';
 import { IWedding, WeddingContext } from '../../context/WeddingsContext';
 import produce from 'immer';
 import { lazy } from 'preact/compat';
 import WeddingModal from '../WeddingModal/WeddingModal';
+import ProgressComponent from '../../common/compinents/ProgressComponent';
 
 // const WeddingsModal = lazy(() => import("./WeddingsModal"));
 
@@ -17,90 +18,22 @@ function WeddingsDashboard({}) {
     setShowModal,
   } = useContext(WeddingContext);
 
-  function updateWeddingChecklist(checklistIndex: number, taskIndex: number) {
-    if (!wedding) return;
-    setWedding(
-      produce(wedding, (draft) => {
-        draft.checklist[checklistIndex].tasks[taskIndex].completed =
-          !draft.checklist[checklistIndex].tasks[taskIndex].completed;
-      })
-    );
-
-    setAllWeddings(
-      produce(allWeddings, (draft) => {
-        const weddingIndex = draft.findIndex((w) => w._id === wedding._id);
-        draft[weddingIndex].checklist[checklistIndex].tasks[
-          taskIndex
-        ].completed =
-          !draft[weddingIndex].checklist[checklistIndex].tasks[taskIndex]
-            .completed;
-      })
-    );
-  }
-
-  function updateChecklistTask(
-    event: any,
-    checklistIndex: number,
-    taskIndex: number
-  ) {
-    if (!wedding) return;
-    setWedding(
-      produce(wedding, (draft) => {
-        draft.checklist[checklistIndex].tasks[taskIndex].task =
-          event.target?.value;
-      })
-    );
-
-    setAllWeddings(
-      produce(allWeddings, (draft) => {
-        const weddingIndex = draft.findIndex((w) => w._id === wedding._id);
-        draft[weddingIndex].checklist[checklistIndex].tasks[taskIndex].task =
-          event.target.value;
-      })
-    );
-  }
-
-  function updateWeddingsField(fieldName: keyof IWedding, newValue: string) {
-    if (!wedding) return;
-    setWedding(
-      produce(wedding, (draft) => {
-        (draft as any)[fieldName] = newValue as any;
-      })
-    );
-
-    setAllWeddings(
-      produce(allWeddings, (draft) => {
-        const weddingIndex = draft.findIndex((w) => w._id === wedding._id);
-        (draft as any)[weddingIndex][fieldName] = newValue as any;
-      })
-    );
-  }
-
   async function displayModal(event: MouseEvent) {
     setShowModal(!showModal);
     const target = event.target;
     if (target instanceof Element) {
       const selectedId = target.closest('.weddingContainer')?.id;
-      console.log(selectedId);
-      
+
       const url = `http://192.168.18.7:8000/api/v1/weddings/${selectedId}`;
       const response = await fetch(url);
       const data = await response.json();
       setWedding(data);
-
-      // if (selectedId) {
-      //   const selectedWedding = allWeddings.find(
-      //     (wedding) => wedding._id === selectedId
-      //   );
-      //   if (selectedWedding) {
-      //     setWedding(selectedWedding);
-      //   }
-      // }
     }
   }
 
   return (
-    <section>
+    // <section className='h-full w-full overflow-y-scroll'>
+    <section className='flex flex-col h-full'>
       <div className='grid grid-cols-5 text-sm font-bold border-b border-base-300 mb-4 p-6'>
         <div className='flex items-center space-x-2'>
           <svg
@@ -197,53 +130,51 @@ function WeddingsDashboard({}) {
           <h2>Progress</h2>
         </div>
       </div>
-      {/* Render all weddings */}
-      {allWeddings &&
-        [...allWeddings]
-          .sort(
-            (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-          )
-          .map((wedding) => {
-            return (
-              <div>
-                <div
-                  onClick={displayModal}
-                  id={wedding._id}
-                  className='weddingContainer space-y-4 bg-base-100 rounded text-sm'
-                >
-                  <div className='grid grid-cols-5 p-6 '>
-                    <h1>{wedding.name}</h1>
-                    <h1>{wedding.email}</h1>
-                    <h1>{formatDate(wedding.date)}</h1>
-                    <h1>{wedding.agent}</h1>
-                    <div className=' flex items-center space-x-4'>
-                      <progress
-                        class='progress progress-success w-56'
-                        value={getWeddingProgress(wedding)}
-                        max='100'
-                      ></progress>
-                      <p className='text-sm'>{`${getWeddingProgress(
-                        wedding
-                      )}%`}</p>
+
+      <div className='flex-1 overflow-y-scroll scrollbar-none'>
+        {/* Render all weddings */}
+        {allWeddings &&
+          [...allWeddings]
+            .sort(
+              (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+            )
+            .map((wedding) => {
+              return (
+                <div>
+                  <div
+                    onClick={displayModal}
+                    id={wedding._id}
+                    className='weddingContainer space-y-4 bg-base-100 rounded text-sm'
+                  >
+                    <div className='grid grid-cols-5 p-6 '>
+                      <h1>{wedding.name}</h1>
+                      <h1>{wedding.email}</h1>
+                      <h1>{formatDate(wedding.date)}</h1>
+                      <h1>{wedding.agent}</h1>
+                      <div className=' flex items-center space-x-4'>
+                        <ProgressComponent
+                          value={getWeddingProgress(wedding)}
+                        />
+                        <p className='text-sm'>{`${getWeddingProgress(
+                          wedding
+                        )}%`}</p>
+                      </div>
                     </div>
                   </div>
+                  <hr className='my-4 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-base-100 to-transparent opacity-25 dark:opacity-100' />
                 </div>
-                <hr className='my-4 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-base-100 to-transparent opacity-25 dark:opacity-100' />
-              </div>
-            );
-          })}
+              );
+            })}
 
-      {/* Wedding modal */}
-      {showModal && (
-        <WeddingModal
-          updateChecklistTask={updateChecklistTask}
-          updateWeddingChecklist={updateWeddingChecklist}
-          updateWeddingsField={updateWeddingsField}
-          setShowModal={setShowModal}
-          showModal={showModal}
-          wedding={wedding}
-        />
-      )}
+        {/* Wedding modal */}
+        {showModal && (
+          <WeddingModal
+            setShowModal={setShowModal}
+            showModal={showModal}
+            wedding={wedding}
+          />
+        )}
+      </div>
     </section>
   );
 }
@@ -265,7 +196,7 @@ export function getWeddingProgress(wedding: IWedding): number {
     (task: any) => task.completed
   ).length;
 
-  return +((completedTasks / totalTasks.length) * 100).toFixed(0);
+  return +((completedTasks / totalTasks.length) * 100).toFixed(0) || 0;
 }
 
 export default WeddingsDashboard;

@@ -54,7 +54,7 @@ router.post('/:id/checklist/', (0, catchAsync_1.catchAsync)(async (req, res) => 
         tasks: tasks,
     });
     await wedding.save();
-    // res.status(200).json(wedding);
+    res.status(200).json(wedding);
 }));
 router.get('/:id/checklist/:checklistId', (0, catchAsync_1.catchAsync)(async (req, res) => {
     const weddingId = req.params.id;

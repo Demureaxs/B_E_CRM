@@ -64,7 +64,7 @@ interface WeddingsContextValue {
   showModal: boolean;
   setShowModal: (showModal: boolean) => void;
   user: IUser | null;
-  refetchData: (url: string) => void;
+  refetchData: () => void;
 }
 
 export const WeddingContext = createContext<WeddingsContextValue>({
@@ -98,7 +98,6 @@ export function WeddingsProvider(props: any) {
       const response = await fetch('http://192.168.18.7:8000/api/v1/weddings');
 
       const data = await response.json();
-      console.log(data);
       setAllWeddings(data);
     }
     fetchWeddings();
