@@ -1,4 +1,5 @@
 import mongoose, { Document, Model, mongo, Schema, Types } from 'mongoose';
+import User from './userModel';
 
 export interface ITodo {
   _id?: Types.ObjectId;
@@ -10,8 +11,13 @@ export interface ITodo {
 
 export interface ITaskItem {
   _id?: Types.ObjectId;
+  createdAt: Date;
+  completedAt: Date | null;
   task: string;
   completed: boolean;
+  agent?: string;
+  agentId?: string;
+  deadline?: Date | null;
   todos: ITodo[];
 }
 
@@ -23,7 +29,9 @@ export interface IChecklistField {
 }
 
 interface IPayment {
+  _id?: Types.ObjectId;
   date: Date;
+  createdAt: Date;
   amount: number;
   for: string;
   description?: string;
@@ -31,9 +39,13 @@ interface IPayment {
 }
 
 export interface IWedding extends Document {
+  _id: Types.ObjectId;
+  createdAt: Date;
   agent: string;
+  agentId: string;
   name: string;
   email: string;
+  budget: number;
   date: Date;
   venue: string;
   guests: number;
@@ -50,44 +62,70 @@ export interface IWedding extends Document {
 const todoSchema: Schema = new mongoose.Schema({
   todo: {
     type: String,
-    required: [true, "Please provide a name for the todo."],
+    required: [true, 'Please provide a name for the todo.'],
   },
   date: {
     type: Date,
-    required: [true, "Please provide a date for the todo."],
+    required: [true, 'Please provide a date for the todo.'],
   },
   deadline: {
     type: Date,
-    required: [true, "Please provide a deadline for the todo."],
+    required: [true, 'Please provide a deadline for the todo.'],
   },
   done: {
     type: Boolean,
     default: false,
   },
-})
+});
 
 const TaskSchema: Schema = new mongoose.Schema({
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    default: () => new Types.ObjectId(),
+  },
   task: {
     type: String,
-    required: [true, "Please provide a name for the task."],
+    required: [true, 'Please provide a name for the task.'],
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
   completed: {
     type: Boolean,
     default: false,
   },
-  todos: [todoSchema]
+  completedAt: {
+    type: Date,
+    default: null,
+  },
+  agent: {
+    type: String,
+    ref: User,
+    default: '',
+  },
+  agentId: {
+    type: String,
+    ref: User,
+    default: '',
+  },
+  deadline: {
+    type: Date,
+    default: null,
+  },
+  todos: [todoSchema],
 });
 
 const checklistSchema: Schema = new mongoose.Schema({
   type: {
     type: String,
-    required: [true, "Please provide a name for the task."],
+    required: [true, 'Please provide a name for the task.'],
   },
   vendor: {
     type: String,
-    required: [true, "Please provide a vendor for the task."],
+    required: [true, 'Please provide a vendor for the task.'],
   },
-  tasks: [TaskSchema]
+  tasks: [TaskSchema],
 });
 
 const paymentSchema: Schema = new mongoose.Schema({
@@ -95,17 +133,21 @@ const paymentSchema: Schema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     default: () => new Types.ObjectId(),
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
   date: {
     type: Date,
-    required: [true, "A date is required."],
+    required: [true, 'A date is required.'],
   },
   amount: {
     type: Number,
-    required: [true, "An amount is required."],
+    required: [true, 'An amount is required.'],
   },
   for: {
     type: String,
-    required: [true, "A description is required."],
+    required: [true, 'A description is required.'],
   },
   description: {
     type: String,
@@ -113,7 +155,7 @@ const paymentSchema: Schema = new mongoose.Schema({
   },
   paymentMethod: {
     type: String,
-    required: [true, "A payment method is required."],
+    required: [true, 'A payment method is required.'],
   },
 });
 
@@ -123,21 +165,35 @@ const weddingSchema: Schema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       default: () => new Types.ObjectId(),
     },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
     agent: {
       type: String,
-      default: ''
+      ref: User,
+      default: '',
+    },
+    agentId: {
+      type: String,
+      ref: User,
+      default: '',
     },
     name: {
       type: String,
-      required: [true, "Please provide a name for the wedding."],
+      required: [true, 'Please provide a name for the wedding.'],
     },
     email: {
       type: String,
-      required: [true, "Please provide an email for the wedding."],
+      required: [true, 'Please provide an email for the wedding.'],
+    },
+    budget: {
+      type: Number,
+      default: 0,
     },
     date: {
       type: Date,
-      required: [true, "Please provide a date for the wedding."],
+      required: [true, 'Please provide a date for the wedding.'],
     },
     venue: {
       type: String,

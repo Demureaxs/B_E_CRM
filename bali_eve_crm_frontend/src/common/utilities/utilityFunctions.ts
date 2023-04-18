@@ -1,4 +1,4 @@
-export function formatDate(date: string) {
+export function formatDate(date: Date | string) {
   if (!date || isNaN(new Date(date).getTime())) return '';
 
   const options = {
@@ -12,7 +12,7 @@ export function formatDate(date: string) {
   );
 }
 
-export function formatDateToShortForm(date: string) {
+export function formatDateToShortForm(date: Date | string) {
   const shortDate = new Date(date);
   const year = shortDate.getFullYear();
   const month = String(shortDate.getMonth() + 1).padStart(2, '0');

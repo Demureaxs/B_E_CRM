@@ -5,14 +5,18 @@ import { saveWedding } from './weddingModalUtils';
 import produce from 'immer';
 import EditableField from './components/common/EditableField';
 import ChecklistContainer from './components/ChecklistContainer';
+import { formatDate } from '../../common/utilities/utilityFunctions';
 
 interface WeddingModalProps {
   wedding: IWedding | null;
   showModal: boolean;
   setShowModal: (showModal: boolean) => void;
+  refetchWedding: () => void;
 }
 
 function WeddingModal(props: WeddingModalProps) {
+  const [editingAgent, setEditingAgent] = useState(false);
+  const [planner, setPlanner] = useState('');
   const {
     allWeddings,
     setAllWeddings,
@@ -21,11 +25,39 @@ function WeddingModal(props: WeddingModalProps) {
     showModal,
     setShowModal,
     refetchData,
+    agents,
   } = useContext(WeddingContext);
 
   // function to update top level fields in state
-  function updateWeddingsField(fieldName: keyof IWedding, newValue: string) {
+  async function updateWeddingsField(
+    fieldName: keyof IWedding,
+    newValue: string
+  ) {
     if (!wedding) return;
+
+    const url = `http://192.168.18.7:8000/api/v1/weddings/${wedding._id}`;
+
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          [fieldName]: newValue,
+        }),
+      });
+
+      if (response.ok) {
+        const updatedWeddings = await response.json();
+        console.log('Wedding Field Updated Successfully');
+        setWedding(updatedWeddings);
+        refetchData();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+
     setWedding(
       produce(wedding, (draft) => {
         (draft as any)[fieldName] = newValue as any;
@@ -43,17 +75,9 @@ function WeddingModal(props: WeddingModalProps) {
   async function addChecklistContainer() {
     if (!wedding) return;
 
-    setWedding(
-      produce(wedding, (draft) => {
-        draft?.checklist.push({
-          type: 'Type',
-          vendor: 'Vendor',
-          tasks: [],
-        });
-      })
-    );
+    const url = `http://192.168.18.7:8000/api/v1/weddings/${wedding._id}/checklist`;
+
     try {
-      const url = `http://192.168.18.7:8000/api/v1/weddings/${wedding._id}/checklist`;
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -64,8 +88,15 @@ function WeddingModal(props: WeddingModalProps) {
           vendor: 'Vendor',
         }),
       });
-      const data = await response.json();
-      setWedding(data);
+
+      if (response.ok) {
+        const updatedWedding = await response.json();
+        console.log('Checklist container added');
+        setWedding(updatedWedding);
+        refetchData();
+      } else {
+        console.log('Failed to add checklist container');
+      }
     } catch (err) {
       console.log(err);
     }
@@ -75,6 +106,25 @@ function WeddingModal(props: WeddingModalProps) {
     if (event?.target.id === 'background') {
       saveWedding(wedding);
       props.setShowModal(!showModal);
+    }
+  }
+
+  async function handleDeleteWedding() {
+    if (!window.confirm('Are you sure you want to delete?')) return;
+    try {
+      const url = `http://192.168.18.7:8000/api/v1/weddings/${wedding?._id}`;
+      const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await response.json();
+      console.log('Wedding Successfull Deleted');
+      refetchData();
+      props.setShowModal(!showModal);
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -121,9 +171,7 @@ function WeddingModal(props: WeddingModalProps) {
                 />
 
                 <EditableField
-                  value={
-                    wedding?.date ? formatDateToShortForm(wedding.date) : ''
-                  }
+                  value={wedding?.date ? formatDate(wedding.date) : ''}
                   fieldName='date'
                   fieldType='date'
                   updateField={updateWeddingsField}
@@ -155,17 +203,17 @@ function WeddingModal(props: WeddingModalProps) {
               <div className='text-sm space-y-2 w-full'>
                 <div className='flex space-x-4 w-full'>
                   <h2 className='font-semibold text-base'>Description:</h2>
-                  <button className='bg-base-300 px-2 rounded text-xs'>
+                  {/* <button className='bg-base-300 px-2 rounded text-xs'>
                     Edit
-                  </button>
+                  </button> */}
                 </div>
                 <div className='space-y-2 w-full'>
                   <div className='flex space-x-2 w-full'>
-                    <h2 className='font-semibold'>Date: </h2>
+                    <h2 className='font-semibold'>Budget: </h2>
                     <EditableField
-                      value={wedding?.date}
-                      fieldName='date'
-                      fieldType='date'
+                      value={wedding?.budget || 0}
+                      fieldName='budget'
+                      fieldType='number'
                       updateField={updateWeddingsField}
                       forceFull={true}
                     />
@@ -219,6 +267,7 @@ function WeddingModal(props: WeddingModalProps) {
               return (
                 <div key={checklistItem._id}>
                   <ChecklistContainer
+                    refetchWedding={props.refetchWedding}
                     task={checklistItem}
                     checklistIndex={index}
                   />
@@ -227,14 +276,14 @@ function WeddingModal(props: WeddingModalProps) {
             })}
             <button
               onClick={addChecklistContainer}
-              className='text-xs bg-base-300 px-2 py-1 rounded'
+              className='text-xs bg-success/80 text-neutral px-2 py-1 rounded'
             >
               Add Checklist
             </button>
           </div>
 
           <div className='w-[25%] p-6 space-y-4'>
-            <div className='space-y-2'>
+            <div className='space-y-4'>
               <div className=' flex justify-between items-center text-sm font-semibold'>
                 <h3>Suggested</h3>
 
@@ -276,6 +325,43 @@ function WeddingModal(props: WeddingModalProps) {
                 </svg>
 
                 <p>Join</p>
+              </button>
+              <div className='text-sm space-y-2'>
+                <h2 className='font-semibold'>Additional Info</h2>
+                {wedding?.createdAt && (
+                  <div>
+                    <p className='font-semibold'>Created: </p>
+                    <p>{formatDate(wedding.createdAt)}</p>
+                  </div>
+                )}
+              </div>
+
+              <div className='text-sm'>
+                <h1 className='font-semibold'>Planner:</h1>
+                {editingAgent ? (
+                  <select
+                    name='agent'
+                    value={planner}
+                    className='focus:outline-none text-sm w-full'
+                  >
+                    {agents.map((agent) => (
+                      <option key={agent._id} value={agent.displayName}>
+                        {agent.displayName}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <p onClick={() => setEditingAgent(!editingAgent)}>
+                    {wedding?.agent}
+                  </p>
+                )}
+              </div>
+
+              <button
+                onClick={handleDeleteWedding}
+                className='bg-error/80 text-neutral px-2 py-1 rounded text-xs'
+              >
+                Delete
               </button>
             </div>
           </div>

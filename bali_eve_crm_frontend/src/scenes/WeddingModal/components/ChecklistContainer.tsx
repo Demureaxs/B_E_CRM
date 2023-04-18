@@ -4,14 +4,14 @@ import produce from 'immer';
 import ProgressComponent from '../../../common/compinents/ProgressComponent';
 import EditableField from './common/EditableField';
 import ChecklistItems from './ChecklistItem';
+import { saveWedding } from '../weddingModalUtils';
 
 function ChecklistContainer(props: any) {
   const [hideComplete, setHideComplete] = useState(false);
   const [percentage, setPercentage] = useState(0);
 
   const { refetchData } = useContext(WeddingContext);
-  const { wedding, setWedding, allWeddings, setAllWeddings } =
-    useContext(WeddingContext);
+  const { wedding, setWedding } = useContext(WeddingContext);
 
   useEffect(() => {
     const completedTasks = props.task.tasks.filter(
@@ -27,12 +27,6 @@ function ChecklistContainer(props: any) {
   async function updateChecklistField(field: string, newValue: string) {
     if (!wedding) return;
 
-    setWedding(
-      produce(wedding, (draft) => {
-        const checklistIndex = props.checklistIndex;
-        (draft as any).checklist[checklistIndex][field] = newValue;
-      })
-    );
     const url = `http://192.168.18.7:8000/api/v1/weddings/${wedding._id}/checklist/${props.task._id}`;
 
     try {
@@ -47,7 +41,9 @@ function ChecklistContainer(props: any) {
       });
 
       if (response.ok) {
+        const updatedWedding = await response.json();
         console.log('Checklist container updated');
+        setWedding(updatedWedding);
         refetchData();
       } else {
         console.log('Failed to update checklist container');
@@ -59,18 +55,7 @@ function ChecklistContainer(props: any) {
 
   async function addChecklistItem(event: MouseEvent) {
     if (wedding) {
-      setWedding(
-        produce(wedding, (draft) => {
-          const checklistIndex = props.checklistIndex;
-          draft?.checklist[checklistIndex].tasks.push({
-            task: 'Name of task',
-            completed: false,
-            todos: [],
-          });
-        })
-      );
-
-      const url = `http://192.168.18.7:8000/api/v1/weddings/${wedding?._id}/checklist/${props.task._id}/tasks`;
+      const url = `http://192.168.18.7:8000/api/v1/weddings/${wedding._id}/checklist/${props.task._id}/tasks`;
 
       try {
         const response = await fetch(url, {
@@ -79,14 +64,20 @@ function ChecklistContainer(props: any) {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            task: 'Name of task',
+            createdAt: new Date(),
+            completedAt: null,
             completed: false,
-            todos: [],
+            task: 'Name of task',
+            // agent: '',
+            // deadline: '',
           }),
         });
-        const data = await response.json();
-        console.log('New task added', data);
-        refetchData();
+        if (response.ok) {
+          const updatedWedding = await response.json();
+          console.log('checklist item added successfully');
+          setWedding(updatedWedding);
+          refetchData();
+        }
       } catch (err) {
         console.log(err);
       }
@@ -96,12 +87,6 @@ function ChecklistContainer(props: any) {
   async function deleteChecklistItem(taskIndex: number) {
     if (!wedding) return;
 
-    setWedding(
-      produce(wedding, (draft) => {
-        const checklistIndex = props.checklistIndex;
-        draft.checklist[checklistIndex].tasks.splice(taskIndex, 1);
-      })
-    );
     const url = `http://192.168.18.7:8000/api/v1/weddings/${wedding._id}/checklist/${props.task._id}/tasks/${props.task.tasks[taskIndex]._id}`;
 
     try {
@@ -114,6 +99,8 @@ function ChecklistContainer(props: any) {
 
       if (response.ok) {
         console.log('Task Deleted');
+        const updatedWedding = await response.json();
+        setWedding(updatedWedding);
         refetchData();
       } else {
         console.log('Failed to delete task');
@@ -126,12 +113,6 @@ function ChecklistContainer(props: any) {
   async function deleteChecklistContainer() {
     if (!wedding) return;
 
-    setWedding(
-      produce(wedding, (draft) => {
-        draft.checklist.splice(props.checklistIndex, 1);
-      })
-    );
-
     const url = `http://192.168.18.7:8000/api/v1/weddings/${wedding._id}/checklist/${props.task._id}`;
 
     try {
@@ -143,7 +124,9 @@ function ChecklistContainer(props: any) {
       });
 
       if (response.ok) {
+        const updatedWedding = await response.json();
         console.log('Checklist container deleted');
+        setWedding(updatedWedding);
         refetchData();
       } else {
         console.log('Failed to delete checklist container');
@@ -198,7 +181,7 @@ function ChecklistContainer(props: any) {
             </button>
             <button
               onClick={deleteChecklistContainer}
-              className='bg-base-300 px-2 py-1 rounded text-xs'
+              className='bg-error/80 text-neutral px-2 py-1 rounded text-xs'
             >
               Delete
             </button>
@@ -216,15 +199,16 @@ function ChecklistContainer(props: any) {
 
       {props.task.tasks.map((tasks: any, index: number) => {
         return (
-          <div className='flex justify-between'>
+          <div className='flex justify-between gap-4'>
             <ChecklistItems
+              refetchWedding={props.refetchWedding}
               key={tasks._id}
               tasks={tasks}
               checklistIndex={props.checklistIndex}
               taskIndex={index}
             />
             <button
-              className=' text-red-500'
+              className=' text-error/80'
               onClick={() => deleteChecklistItem(index)}
             >
               <svg
@@ -245,12 +229,14 @@ function ChecklistContainer(props: any) {
           </div>
         );
       })}
-      <button
-        onClick={addChecklistItem}
-        className='bg-base-300 text-xs px-2 py-1 rounded ml-9'
-      >
-        Add Task
-      </button>
+      <div className='pt-4'>
+        <button
+          onClick={addChecklistItem}
+          className='bg-success/80 text-base-100 text-xs px-2 py-1 rounded ml-9'
+        >
+          Add Task
+        </button>
+      </div>
     </div>
   );
 }

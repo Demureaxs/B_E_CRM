@@ -11,8 +11,13 @@ export interface ITodo {
 
 export interface ITaskItem {
   _id?: string;
+  createdAt: Date;
+  completedAt: Date | null;
   task: string;
   completed: boolean;
+  agent?: string;
+  agentId?: string;
+  deadline?: Date | null;
   todos: ITodo[];
 }
 
@@ -24,7 +29,9 @@ export interface IChecklistField {
 }
 
 interface IPayment {
+  _id?: string;
   date: Date;
+  createdAt: Date;
   amount: number;
   for: string;
   description?: string;
@@ -33,10 +40,13 @@ interface IPayment {
 
 export interface IWedding extends Document {
   _id: string;
+  createdAt: Date;
   agent: string;
+  agentId: string;
   name: string;
   email: string;
-  date: string;
+  budget: number;
+  date: Date;
   venue: string;
   guests: number;
   foodAndBeverage: string;
@@ -49,7 +59,9 @@ export interface IWedding extends Document {
   payments: IPayment[];
 }
 
-interface IUser {
+export interface IUser {
+  _id: string;
+  role: string;
   googleId: number;
   displayName: string;
   email: string;
@@ -64,6 +76,7 @@ interface WeddingsContextValue {
   showModal: boolean;
   setShowModal: (showModal: boolean) => void;
   user: IUser | null;
+  agents: IUser[];
   refetchData: () => void;
 }
 
@@ -75,6 +88,7 @@ export const WeddingContext = createContext<WeddingsContextValue>({
   showModal: false,
   setShowModal: () => {},
   user: null,
+  agents: [],
   refetchData: () => {},
 });
 
@@ -83,6 +97,7 @@ export function WeddingsProvider(props: any) {
   const [wedding, setWedding] = useState<IWedding | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [user, setUser] = useState<IUser | null>(null);
+  const [agents, setAgents] = useState<IUser[]>([]);
 
   // useEffect(() => {
   //   async function fetchUser() {
@@ -92,6 +107,17 @@ export function WeddingsProvider(props: any) {
   //   }
   //   fetchUser();
   // }, []);
+
+  async function fetchAgents() {
+    const response = await fetch('http://192.168.18.7:8000/api/v1/users');
+    const data = await response.json();
+    setAgents(data);
+  }
+
+  useEffect(() => {
+    fetchAgents();
+    console.log(agents);
+  }, []);
 
   useEffect(() => {
     async function fetchWeddings() {
@@ -117,6 +143,7 @@ export function WeddingsProvider(props: any) {
     showModal,
     setShowModal,
     user,
+    agents,
     refetchData: fetchWeddings,
   };
 

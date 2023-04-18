@@ -1,4 +1,4 @@
-function StatCard({ statistic, label }: any) {
+function StatCard({ statistic, label, thisWeek }: any) {
   return (
     <div className='flex rounded items-center bg-base-100'>
       <div className='flex-1 p-6 flex gap-4'>
@@ -27,7 +27,10 @@ function StatCard({ statistic, label }: any) {
           <h2 className='font-semibold text-lg'>{label}</h2>
           <h1
             className={`text-2xl font-semibold ${
-              statistic > 0 ? 'text-green-500' : 'text-red-500'
+              (statistic > 0 && label.toLowerCase() === 'overdue') ||
+              (statistic < 0 && label.toLowerCase() !== 'overdue')
+                ? 'text-error/80'
+                : 'text-success/80'
             }`}
           >
             {statistic}
@@ -39,8 +42,13 @@ function StatCard({ statistic, label }: any) {
                 fill='none'
                 viewBox='0 0 24 24'
                 stroke-width='1.5'
-                stroke='green'
-                className='w-4 h-4'
+                stroke='currentColor'
+                className={`w-4 h-4 ${
+                  (statistic > 0 && label.toLowerCase() === 'overdue') ||
+                  (statistic < 0 && label.toLowerCase() !== 'overdue')
+                    ? 'text-error/80'
+                    : 'text-success/80'
+                }`}
               >
                 <path
                   stroke-linecap='round'
@@ -54,8 +62,13 @@ function StatCard({ statistic, label }: any) {
                 fill='none'
                 viewBox='0 0 24 24'
                 stroke-width='1.5'
-                stroke='red'
-                className='w-4 h-4'
+                stroke='currentColor'
+                className={`w-4 h-4 ${
+                  (statistic > 0 && label.toLowerCase() === 'overdue') ||
+                  (statistic < 0 && label.toLowerCase() !== 'overdue')
+                    ? 'text-error/80'
+                    : 'text-success/80'
+                }`}
               >
                 <path
                   stroke-linecap='round'
@@ -64,7 +77,7 @@ function StatCard({ statistic, label }: any) {
                 />
               </svg>
             )}{' '}
-            <h3 className=' text-xs'>{statistic} this week</h3>
+            <h3 className=' text-xs'>{thisWeek} this week</h3>
           </div>
         </div>
       </div>

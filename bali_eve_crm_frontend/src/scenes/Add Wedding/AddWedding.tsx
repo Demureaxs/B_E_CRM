@@ -1,9 +1,9 @@
 import { useContext, useState } from 'preact/hooks';
 import { useEffect } from 'preact/hooks';
-import { WeddingContext } from '../../context/WeddingsContext';
+import { IUser, WeddingContext } from '../../context/WeddingsContext';
 
 function AddWedding() {
-  const [agent, setAgent] = useState('');
+  const [planner, setPlanner] = useState('');
   const [name, setName] = useState('');
   const [budget, setBudget] = useState(0);
   const [email, setEmail] = useState('');
@@ -17,11 +17,14 @@ function AddWedding() {
   const [photographer, setPhotographer] = useState('');
   const [vendorProgress, setVendorProgress] = useState('');
 
-  const { refetchData } = useContext(WeddingContext);
+  const { refetchData, agents } = useContext(WeddingContext);
 
   async function handleSave() {
+    const agentId = agents.find((agent) => agent.displayName === planner)?._id;
+    console.log(agentId);
     const wedding = {
-      agent: agent,
+      agent: planner,
+      agentId: agentId,
       name: name,
       budget: budget,
       email: email,
@@ -53,14 +56,23 @@ function AddWedding() {
         console.log('Wedding Saved');
         refetchData();
       }
+      setPlanner('');
+      setName('');
+      setBudget(0);
+      setEmail('');
+      setDate('');
+      setVenue('');
+      setGuests(0);
+      setFoodAndBeverage('');
+      setDecoration('');
+      setProduction('');
+      setVideographer('');
+      setPhotographer('');
+      setVendorProgress('');
     } catch (err) {
       console.log(err);
     }
   }
-
-  // useEffect(() => {
-  //   console.log(wedding);
-  // }, [wedding]);
 
   function handleChange(event: Event, setState: any) {
     const target = event.target as HTMLInputElement;
@@ -79,15 +91,21 @@ function AddWedding() {
       <div className='bg-base-100 space-y-4 h-fit p-6 flex-1 mx-auto rounded'>
         <p className='text-xs '>Agent:</p>
         <select
+          defaultValue={'Agent1'}
           name='agent'
-          value={agent}
-          onChange={(event) => handleChange(event, setAgent)}
-          className='focus:outline-none text-sm w-full'
+          value={planner}
+          onChange={(event) => handleChange(event, setPlanner)}
+          className='focus:outline-none text-sm w-full px-2 py-1'
+          placeholder='Select Agent'
         >
-          <option>Agent 1</option>
-          <option>Agent 2</option>
-          <option>Agent 3</option>
-          <option>Agent 4</option>
+          {agents &&
+            agents.map((agent) => {
+              return (
+                <option key={agent._id} value={agent.displayName}>
+                  {agent.displayName}
+                </option>
+              );
+            })}
         </select>
         <Input
           label='Name'
@@ -164,9 +182,9 @@ function AddWedding() {
         <div className='text-sm w-full flex justify-end'>
           <button
             onClick={handleSave}
-            className='bg-base-300 rounded px-2 py-1 mt-10'
+            className='bg-success/80 text-neutral rounded px-2 py-1 mt-10'
           >
-            Add Wedding +
+            Add Wedding
           </button>
         </div>
       </div>

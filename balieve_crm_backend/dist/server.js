@@ -11,9 +11,11 @@ const morgan_1 = __importDefault(require("morgan"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const passport_1 = __importDefault(require("passport"));
 const weddingRoutes_1 = __importDefault(require("./routes/weddingRoutes"));
+const agentRoutes_1 = __importDefault(require("./routes/agentRoutes"));
 const compression_1 = __importDefault(require("compression"));
 const express_session_1 = __importDefault(require("express-session"));
 const authorizeUser_1 = require("./utilities/authorizeUser");
+const userModel_1 = __importDefault(require("./models/userModel"));
 dotenv_1.default.config({ path: path_1.default.join(__dirname, '../.env') });
 require("./models/userModel");
 require("./services/passport");
@@ -47,6 +49,33 @@ app.get('/', authorizeUser_1.authorizeUser, (req, res) => {
 });
 app.use(express_1.default.static(path_1.default.join(__dirname, '../../balieve_crm_vite/dist')));
 app.use('/api/v1/weddings', /* authorizeUser, */ weddingRoutes_1.default);
+app.use('/api/v1/agents', agentRoutes_1.default);
+// need to export these functions to their relevant routes
+app.get('/api/v1/users', async (req, res) => {
+    try {
+        const users = await userModel_1.default.find();
+        res.json(users);
+    }
+    catch (err) {
+        console.log(err);
+    }
+});
+app.post('/api/v1/users', async (req, res) => {
+    try {
+        const { displayName, email, googleId, role } = req.body;
+        const existingUser = await userModel_1.default.find({ email });
+        if (existingUser.length > 0) {
+            return res.status(400).json({ message: 'Email already exists' });
+        }
+        const user = new userModel_1.default({ displayName, email, googleId, role });
+        await user.save();
+        res.json(user);
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error Creating User' });
+    }
+});
 app.get('/login', (req, res) => {
     res.sendFile(path_1.default.join(__dirname, '../../balieve_crm_vite/dist/login.html'));
 });

@@ -226,6 +226,8 @@ router.post(
 
     const newTask = {
       task: task!,
+      createdAt: new Date(),
+      completedAt: null,
       completed: completed!,
       todos: todos!,
     };
@@ -279,7 +281,15 @@ router.put(
     const checklistId = req.params.checklistId;
     const taskId = req.params.taskId;
 
-    const { task, completed, todos }: Partial<ITaskItem> = req.body;
+    const {
+      agent,
+      agentId,
+      deadline,
+      task,
+      completed,
+      todos,
+      completedAt,
+    }: Partial<ITaskItem> = req.body;
 
     const wedding = await Wedding.findById(weddingId);
 
@@ -304,8 +314,12 @@ router.put(
     }
 
     if (task) taskItem.task = task;
-    if (completed) taskItem.completed = completed;
+    if (completed !== undefined) taskItem.completed = completed;
     if (todos) taskItem.todos = todos;
+    if (completedAt) taskItem.completedAt = completedAt;
+    if (agent) taskItem.agent = agent;
+    if (agentId) taskItem.agentId = agentId;
+    if (deadline) taskItem.deadline = deadline;
 
     await wedding.save();
 

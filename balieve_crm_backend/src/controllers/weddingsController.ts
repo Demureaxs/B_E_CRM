@@ -30,9 +30,11 @@ export async function createWedding(
 ) {
   const {
     agent,
+    agentId,
     name,
     email,
     date,
+    budget,
     venue,
     guests,
     foodAndBeverage,
@@ -47,9 +49,11 @@ export async function createWedding(
 
   const newWedding = new Wedding({
     agent,
+    agentId,
     name,
     email,
     date,
+    budget,
     venue,
     guests,
     foodAndBeverage,
@@ -60,6 +64,7 @@ export async function createWedding(
     vendorProgress,
     checklist,
     payments,
+    createdAt: new Date(),
   });
 
   await newWedding.save();
@@ -77,6 +82,7 @@ export async function updateWedding(
     name,
     email,
     date,
+    budget,
     venue,
     guests,
     foodAndBeverage,
@@ -98,6 +104,7 @@ export async function updateWedding(
   if (name) wedding.name = name;
   if (email) wedding.email = email;
   if (date) wedding.date = date;
+  if (budget) wedding.budget = budget;
   if (venue) wedding.venue = venue;
   if (guests) wedding.guests = guests;
   if (foodAndBeverage) wedding.foodAndBeverage = foodAndBeverage;

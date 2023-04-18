@@ -1,6 +1,8 @@
-import mongoose, { Document, Model, mongo } from 'mongoose';
+import mongoose, { Document, Model, Types, mongo } from 'mongoose';
 
 export interface IUser extends Document {
+  _id: Types.ObjectId;
+  role: 'admin' | 'agent' | 'user';
   googleId: string;
   displayName: string;
   email: string;
@@ -8,6 +10,11 @@ export interface IUser extends Document {
 }
 
 const userSchema = new mongoose.Schema({
+  role: {
+    type: String,
+    enum: ['admin', 'agent', 'user'],
+    default: 'user',
+  },
   googleId: String,
   displayName: String,
   email: String,

@@ -21,12 +21,14 @@ async function getWedding(req, res, next) {
 }
 exports.getWedding = getWedding;
 async function createWedding(req, res, next) {
-    const { agent, name, email, date, venue, guests, foodAndBeverage, decoration, production, photographer, videographer, vendorProgress, checklist, payments, } = req.body;
+    const { agent, agentId, name, email, date, budget, venue, guests, foodAndBeverage, decoration, production, photographer, videographer, vendorProgress, checklist, payments, } = req.body;
     const newWedding = new weddingsModel_1.default({
         agent,
+        agentId,
         name,
         email,
         date,
+        budget,
         venue,
         guests,
         foodAndBeverage,
@@ -37,6 +39,7 @@ async function createWedding(req, res, next) {
         vendorProgress,
         checklist,
         payments,
+        createdAt: new Date(),
     });
     await newWedding.save();
     res.json(newWedding);
@@ -44,7 +47,7 @@ async function createWedding(req, res, next) {
 exports.createWedding = createWedding;
 async function updateWedding(req, res, next) {
     const id = req.params.id;
-    const { agent, name, email, date, venue, guests, foodAndBeverage, decoration, production, photographer, videographer, vendorProgress, checklist, payments, } = req.body;
+    const { agent, name, email, date, budget, venue, guests, foodAndBeverage, decoration, production, photographer, videographer, vendorProgress, checklist, payments, } = req.body;
     const wedding = await weddingsModel_1.default.findByIdAndUpdate(id);
     if (!wedding) {
         return res.status(400).json({ error: 'Wedding not found' });
@@ -57,6 +60,8 @@ async function updateWedding(req, res, next) {
         wedding.email = email;
     if (date)
         wedding.date = date;
+    if (budget)
+        wedding.budget = budget;
     if (venue)
         wedding.venue = venue;
     if (guests)

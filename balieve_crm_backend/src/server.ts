@@ -6,9 +6,11 @@ import morgan from 'morgan';
 import mongoose from 'mongoose';
 import passport from 'passport';
 import weddingRoutes from './routes/weddingRoutes';
+import agentRoutes from './routes/agentRoutes';
 import compression from 'compression';
 import session from 'express-session';
 import { authorizeUser } from './utilities/authorizeUser';
+import User from './models/userModel';
 
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
@@ -57,6 +59,35 @@ app.get('/', authorizeUser, (req: Request, res: Response) => {
 app.use(express.static(path.join(__dirname, '../../balieve_crm_vite/dist')));
 
 app.use('/api/v1/weddings', /* authorizeUser, */ weddingRoutes);
+app.use('/api/v1/agents', agentRoutes);
+// need to export these functions to their relevant routes
+app.get('/api/v1/users', async (req: Request, res: Response) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (err) {
+    console.log(err);
+  }
+});
+app.post('/api/v1/users', async (req: Request, res: Response) => {
+  try {
+    const { displayName, email, googleId, role } = req.body;
+
+    const existingUser = await User.find({ email });
+
+    if (existingUser.length > 0) {
+      return res.status(400).json({ message: 'Email already exists' });
+    }
+
+    const user = new User({ displayName, email, googleId, role });
+
+    await user.save();
+    res.json(user);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error Creating User' });
+  }
+});
 
 app.get('/login', (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, '../../balieve_crm_vite/dist/login.html'));

@@ -1,4 +1,4 @@
-function InlineNav({ name, imageLink }: any) {
+function InlineNav({ name, imageLink, searchTerm, setSearchTerm }: any) {
   return (
     <div className='navbar bg-base-100'>
       <div className='flex-1'>
@@ -11,6 +11,12 @@ function InlineNav({ name, imageLink }: any) {
           <input
             type='text'
             placeholder='Search'
+            value={searchTerm}
+            onInput={(event) => {
+              if (event.target instanceof HTMLInputElement) {
+                setSearchTerm(event.target.value);
+              }
+            }}
             className='input input-bordered'
           />
         </div>

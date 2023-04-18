@@ -134,6 +134,8 @@ router.post('/:id/checklist/:checklistId/tasks', (0, catchAsync_1.catchAsync)(as
     const { task, completed, todos } = req.body;
     const newTask = {
         task: task,
+        createdAt: new Date(),
+        completedAt: null,
         completed: completed,
         todos: todos,
     };
@@ -163,7 +165,7 @@ router.put('/:id/checklist/:checklistId/tasks/:taskId', (0, catchAsync_1.catchAs
     const weddingId = req.params.id;
     const checklistId = req.params.checklistId;
     const taskId = req.params.taskId;
-    const { task, completed, todos } = req.body;
+    const { agent, agentId, deadline, task, completed, todos, completedAt, } = req.body;
     const wedding = await weddingsModel_1.default.findById(weddingId);
     if (!wedding) {
         return res.status(404).json({ error: 'Wedding not found' });
@@ -178,10 +180,18 @@ router.put('/:id/checklist/:checklistId/tasks/:taskId', (0, catchAsync_1.catchAs
     }
     if (task)
         taskItem.task = task;
-    if (completed)
+    if (completed !== undefined)
         taskItem.completed = completed;
     if (todos)
         taskItem.todos = todos;
+    if (completedAt)
+        taskItem.completedAt = completedAt;
+    if (agent)
+        taskItem.agent = agent;
+    if (agentId)
+        taskItem.agentId = agentId;
+    if (deadline)
+        taskItem.deadline = deadline;
     await wedding.save();
     res.status(200).json(wedding);
 }));
