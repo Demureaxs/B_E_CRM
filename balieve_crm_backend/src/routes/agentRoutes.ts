@@ -26,8 +26,11 @@ interface IAgentTask {
   completed: boolean;
   todos: ITodo[];
   agent: string;
+  agentId: string;
   deadline?: Date;
   weddingId: Types.ObjectId;
+  weddingName: string;
+  weddingDate: Date;
   checklistId: Types.ObjectId;
 }
 
@@ -49,8 +52,9 @@ router.get('/', async (req, res) => {
 router.get('/:agentId/tasks', async (req, res) => {
   try {
     const agentId = req.params.agentId;
+
     const weddings = await Wedding.find({
-      'checklist.tasks.agent': agentId,
+      'checklist.tasks.agentId': agentId,
     }).lean();
 
     const tasks: IAgentTask[] = [];
@@ -58,7 +62,7 @@ router.get('/:agentId/tasks', async (req, res) => {
     weddings.forEach((wedding) => {
       wedding.checklist.forEach((checklist) => {
         checklist.tasks.forEach((task) => {
-          if (task.agent?.toString() === agentId) {
+          if (task.agentId?.toString() === agentId && !task.completed) {
             tasks.push({
               _id: task._id as Types.ObjectId,
               createdAt: task.createdAt,
@@ -66,10 +70,13 @@ router.get('/:agentId/tasks', async (req, res) => {
               task: task.task,
               completed: task.completed,
               todos: task.todos,
-              agent: task.agent,
+              agent: task.agent!,
+              agentId: task.agentId!,
               deadline: task.deadline!,
               weddingId: wedding._id as Types.ObjectId,
               checklistId: checklist._id as Types.ObjectId,
+              weddingName: wedding.name!,
+              weddingDate: wedding.date,
             });
           }
         });

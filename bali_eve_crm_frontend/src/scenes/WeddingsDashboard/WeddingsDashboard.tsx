@@ -283,7 +283,7 @@ export function getWeddingProgress(wedding: IWedding): number {
   return +((completedTasks / totalTasks.length) * 100).toFixed(0) || 0;
 }
 
-interface HeaderFieldsProps {
+export interface HeaderFieldsProps {
   sortBy: string;
   setSortBy: (value: string) => void;
   asc: boolean;
@@ -293,7 +293,7 @@ interface HeaderFieldsProps {
   iconSvg: any;
 }
 
-function HeaderFields({
+export function HeaderFields({
   sortBy,
   setSortBy,
   asc,

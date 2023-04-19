@@ -68,6 +68,22 @@ export interface IUser {
   photo: string;
 }
 
+export interface IAgentTask {
+  _id: string;
+  createdAt: Date;
+  completedAt: Date | null;
+  task: string;
+  completed: boolean;
+  todos: ITodo[];
+  agent: string;
+  agentId: string;
+  deadline?: Date;
+  weddingId: string;
+  weddingName: string;
+  weddingDate: Date;
+  checklistId: string;
+}
+
 interface WeddingsContextValue {
   allWeddings: IWedding[];
   setAllWeddings: (weddings: IWedding[]) => void;
@@ -78,6 +94,8 @@ interface WeddingsContextValue {
   user: IUser | null;
   agents: IUser[];
   refetchData: () => void;
+  tasks: IAgentTask[];
+  fetchTasks: () => void;
 }
 
 export const WeddingContext = createContext<WeddingsContextValue>({
@@ -90,6 +108,8 @@ export const WeddingContext = createContext<WeddingsContextValue>({
   user: null,
   agents: [],
   refetchData: () => {},
+  tasks: [],
+  fetchTasks: () => {},
 });
 
 export function WeddingsProvider(props: any) {
@@ -98,6 +118,7 @@ export function WeddingsProvider(props: any) {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [user, setUser] = useState<IUser | null>(null);
   const [agents, setAgents] = useState<IUser[]>([]);
+  const [tasks, setTasks] = useState([]);
 
   // useEffect(() => {
   //   async function fetchUser() {
@@ -107,6 +128,20 @@ export function WeddingsProvider(props: any) {
   //   }
   //   fetchUser();
   // }, []);
+
+  // ----------------------------------------------------------------Need to fix env and local----------------------------------------------------------------
+
+  async function fetchTasks() {
+    const res = await fetch(
+      'http://192.168.18.7:8000/api/v1/agents/643e3ee3250aa44438b09464/tasks'
+    );
+    const tasks = await res.json();
+    setTasks(tasks);
+  }
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
 
   async function fetchAgents() {
     const response = await fetch('http://192.168.18.7:8000/api/v1/users');
@@ -144,6 +179,8 @@ export function WeddingsProvider(props: any) {
     setShowModal,
     user,
     agents,
+    tasks,
+    fetchTasks,
     refetchData: fetchWeddings,
   };
 

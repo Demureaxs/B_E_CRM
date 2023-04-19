@@ -24,14 +24,14 @@ router.get('/:agentId/tasks', async (req, res) => {
     try {
         const agentId = req.params.agentId;
         const weddings = await weddingsModel_1.default.find({
-            'checklist.tasks.agent': agentId,
+            'checklist.tasks.agentId': agentId,
         }).lean();
         const tasks = [];
         weddings.forEach((wedding) => {
             wedding.checklist.forEach((checklist) => {
                 checklist.tasks.forEach((task) => {
                     var _a;
-                    if (((_a = task.agent) === null || _a === void 0 ? void 0 : _a.toString()) === agentId) {
+                    if (((_a = task.agentId) === null || _a === void 0 ? void 0 : _a.toString()) === agentId && !task.completed) {
                         tasks.push({
                             _id: task._id,
                             createdAt: task.createdAt,
@@ -40,9 +40,12 @@ router.get('/:agentId/tasks', async (req, res) => {
                             completed: task.completed,
                             todos: task.todos,
                             agent: task.agent,
+                            agentId: task.agentId,
                             deadline: task.deadline,
                             weddingId: wedding._id,
                             checklistId: checklist._id,
+                            weddingName: wedding.name,
+                            weddingDate: wedding.date,
                         });
                     }
                 });

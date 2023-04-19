@@ -14,15 +14,12 @@ function ChecklistItems(props: any) {
     setAllWeddings,
     refetchData,
     agents,
+    fetchTasks,
   } = useContext(WeddingContext);
 
   const [task, setTask] = useState('');
   const [planner, setPlanner] = useState(props.tasks.agent);
   const [deadline, setDeadline] = useState(props.tasks.deadline);
-
-  useEffect(() => {
-    console.log(props);
-  }, []);
 
   async function updateWeddingChecklist(
     checklistIndex: number,
@@ -51,6 +48,7 @@ function ChecklistItems(props: any) {
         const updatedWedding = await response.json();
         console.log('checklist completed updated successfully');
         setWedding(updatedWedding);
+        fetchTasks();
         refetchData();
       }
     } catch (err) {
@@ -64,7 +62,7 @@ function ChecklistItems(props: any) {
     taskIndex: number
   ) {
     if (!wedding) return;
-    
+
     const plannerId = agents.find(
       (agent) => agent.displayName === planner
     )?._id;
@@ -93,6 +91,7 @@ function ChecklistItems(props: any) {
         const updatedWedding = await response.json();
         console.log('checklist Taskname updated successfully');
         setWedding(updatedWedding);
+        fetchTasks();
         refetchData();
       }
     } catch (err) {

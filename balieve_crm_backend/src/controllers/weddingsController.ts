@@ -79,6 +79,7 @@ export async function updateWedding(
   const id = req.params.id;
   const {
     agent,
+    agentId,
     name,
     email,
     date,
@@ -101,6 +102,7 @@ export async function updateWedding(
   }
 
   if (agent) wedding.agent = agent;
+  if (agentId) wedding.agentId = agentId;
   if (name) wedding.name = name;
   if (email) wedding.email = email;
   if (date) wedding.date = date;

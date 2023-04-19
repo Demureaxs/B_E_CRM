@@ -47,13 +47,15 @@ async function createWedding(req, res, next) {
 exports.createWedding = createWedding;
 async function updateWedding(req, res, next) {
     const id = req.params.id;
-    const { agent, name, email, date, budget, venue, guests, foodAndBeverage, decoration, production, photographer, videographer, vendorProgress, checklist, payments, } = req.body;
+    const { agent, agentId, name, email, date, budget, venue, guests, foodAndBeverage, decoration, production, photographer, videographer, vendorProgress, checklist, payments, } = req.body;
     const wedding = await weddingsModel_1.default.findByIdAndUpdate(id);
     if (!wedding) {
         return res.status(400).json({ error: 'Wedding not found' });
     }
     if (agent)
         wedding.agent = agent;
+    if (agentId)
+        wedding.agentId = agentId;
     if (name)
         wedding.name = name;
     if (email)

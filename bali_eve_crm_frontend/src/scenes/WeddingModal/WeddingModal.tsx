@@ -16,7 +16,6 @@ interface WeddingModalProps {
 
 function WeddingModal(props: WeddingModalProps) {
   const [editingAgent, setEditingAgent] = useState(false);
-  const [planner, setPlanner] = useState('');
   const {
     allWeddings,
     setAllWeddings,
@@ -27,6 +26,7 @@ function WeddingModal(props: WeddingModalProps) {
     refetchData,
     agents,
   } = useContext(WeddingContext);
+  const [planner, setPlanner] = useState(wedding?.agent);
 
   // function to update top level fields in state
   async function updateWeddingsField(
@@ -37,39 +37,36 @@ function WeddingModal(props: WeddingModalProps) {
 
     const url = `http://192.168.18.7:8000/api/v1/weddings/${wedding._id}`;
 
+    let requestBody: Partial<IWedding> = { [fieldName]: newValue };
+
+    // makes sure to set the request body to edit both the id and agent name - need to optimize
+    if (fieldName === 'agent') {
+      const agentId = agents.find((agent) => agent.displayName === newValue);
+      requestBody = {
+        ...requestBody,
+        agentId: agentId?._id,
+      };
+    }
+
     try {
       const response = await fetch(url, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          [fieldName]: newValue,
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       if (response.ok) {
         const updatedWeddings = await response.json();
         console.log('Wedding Field Updated Successfully');
+        console.log(updatedWeddings);
         setWedding(updatedWeddings);
         refetchData();
       }
     } catch (err) {
       console.log(err);
     }
-
-    setWedding(
-      produce(wedding, (draft) => {
-        (draft as any)[fieldName] = newValue as any;
-      })
-    );
-
-    setAllWeddings(
-      produce(allWeddings, (draft) => {
-        const weddingIndex = draft.findIndex((w) => w._id === wedding._id);
-        (draft as any)[weddingIndex][fieldName] = newValue as any;
-      })
-    );
   }
 
   async function addChecklistContainer() {
@@ -341,7 +338,13 @@ function WeddingModal(props: WeddingModalProps) {
                 {editingAgent ? (
                   <select
                     name='agent'
-                    value={planner}
+                    value={wedding?.agent}
+                    onChange={(event) => {
+                      if (event.target instanceof HTMLSelectElement) {
+                        updateWeddingsField('agent', event.target.value);
+                        // setPlanner(event.target.value);
+                      }
+                    }}
                     className='focus:outline-none text-sm w-full'
                   >
                     {agents.map((agent) => (
