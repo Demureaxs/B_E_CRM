@@ -201,7 +201,7 @@ function Input({ label, type, placeholder, value, onChange }: any) {
       <p className='text-xs'>{label}:</p>
       <input
         type={type}
-        className='w-full px-2 py-1 focus:outline-none focus:border-b focus:border-blue-600 text-sm'
+        className='w-full px-2 py-1 rounded placeholder:text-neutral-content/50 focus:outline-none focus:border-b focus:border-blue-600 text-sm'
         placeholder={placeholder}
         value={value}
         onChange={onChange}

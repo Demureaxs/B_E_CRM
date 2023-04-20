@@ -3,7 +3,7 @@ import Wedding, {
   IWedding,
   IChecklistField,
   ITaskItem,
-  ITodo,
+  IComments,
 } from '../models/weddingsModel';
 import { Types } from 'mongoose';
 import { catchAsync } from '../utilities/catchAsync';
@@ -24,7 +24,7 @@ interface IAgentTask {
   completedAt: Date | null;
   task: string;
   completed: boolean;
-  todos: ITodo[];
+  comments: IComments[];
   agent: string;
   agentId: string;
   deadline?: Date;
@@ -69,7 +69,7 @@ router.get('/:agentId/tasks', async (req, res) => {
               completedAt: task.completedAt,
               task: task.task,
               completed: task.completed,
-              todos: task.todos,
+              comments: task.comments,
               agent: task.agent!,
               agentId: task.agentId!,
               deadline: task.deadline!,

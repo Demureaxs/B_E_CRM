@@ -131,13 +131,13 @@ router.post('/:id/checklist/:checklistId/tasks', (0, catchAsync_1.catchAsync)(as
     if (!checklistItem) {
         return res.status(404).json({ error: 'Checklist not found' });
     }
-    const { task, completed, todos } = req.body;
+    const { task, completed, comments } = req.body;
     const newTask = {
         task: task,
         createdAt: new Date(),
         completedAt: null,
         completed: completed,
-        todos: todos,
+        comments: comments,
     };
     checklistItem.tasks.push(newTask);
     await wedding.save();
@@ -165,7 +165,7 @@ router.put('/:id/checklist/:checklistId/tasks/:taskId', (0, catchAsync_1.catchAs
     const weddingId = req.params.id;
     const checklistId = req.params.checklistId;
     const taskId = req.params.taskId;
-    const { agent, agentId, deadline, task, completed, todos, completedAt, } = req.body;
+    const { agent, agentId, deadline, task, completed, comments, completedAt, } = req.body;
     const wedding = await weddingsModel_1.default.findById(weddingId);
     if (!wedding) {
         return res.status(404).json({ error: 'Wedding not found' });
@@ -182,8 +182,8 @@ router.put('/:id/checklist/:checklistId/tasks/:taskId', (0, catchAsync_1.catchAs
         taskItem.task = task;
     if (completed !== undefined)
         taskItem.completed = completed;
-    if (todos)
-        taskItem.todos = todos;
+    if (comments)
+        taskItem.comments = comments;
     if (completedAt)
         taskItem.completedAt = completedAt;
     if (agent)
@@ -215,7 +215,7 @@ router.delete('/:id/checklist/:checklistId/tasks/:taskId', (0, catchAsync_1.catc
     await wedding.save();
     res.status(200).json(wedding);
 }));
-router.get('/:id/checklist/:checklistId/tasks/:taskId/todos', (0, catchAsync_1.catchAsync)(async (req, res) => {
+router.get('/:id/checklist/:checklistId/tasks/:taskId/comments', (0, catchAsync_1.catchAsync)(async (req, res) => {
     const weddingId = req.params.id;
     const checklistId = req.params.checklistId;
     const taskId = req.params.taskId;
@@ -231,9 +231,9 @@ router.get('/:id/checklist/:checklistId/tasks/:taskId/todos', (0, catchAsync_1.c
     if (!taskItem) {
         return res.status(404).json({ error: 'Task not found' });
     }
-    res.status(200).json(taskItem.todos);
+    res.status(200).json(taskItem.comments);
 }));
-router.get('/:id/checklist/:checklistId/tasks/:taskId/todos/:todoId', (0, catchAsync_1.catchAsync)(async (req, res) => {
+router.get('/:id/checklist/:checklistId/tasks/:taskId/comments/:commentId', (0, catchAsync_1.catchAsync)(async (req, res) => {
     const weddingId = req.params.id;
     const checklistId = req.params.checklistId;
     const taskId = req.params.taskId;
@@ -256,7 +256,7 @@ router.get('/:id/checklist/:checklistId/tasks/:taskId/todos/:todoId', (0, catchA
     if (!taskItem) {
         return res.status(404).json({ error: 'Task not found' });
     }
-    const todoItem = taskItem.todos.find((item) => {
+    const todoItem = taskItem.comments.find((item) => {
         var _a;
         return ((_a = item._id) === null || _a === void 0 ? void 0 : _a.toString()) === todoId;
     });
@@ -265,11 +265,11 @@ router.get('/:id/checklist/:checklistId/tasks/:taskId/todos/:todoId', (0, catchA
     }
     res.status(200).json(todoItem);
 }));
-router.post('/:id/checklist/:checklistId/tasks/:taskId/todos', (0, catchAsync_1.catchAsync)(async (req, res) => {
+router.post('/:id/checklist/:checklistId/tasks/:taskId/comments', (0, catchAsync_1.catchAsync)(async (req, res) => {
     const weddingId = req.params.id;
     const checklistId = req.params.checklistId;
     const taskId = req.params.taskId;
-    const { todo, date, deadline, done } = req.body;
+    const { _id, parentId, text, author, authorId, createdAt, updatedAt, } = req.body;
     const wedding = await weddingsModel_1.default.findById(weddingId);
     if (!wedding) {
         return res.status(404).json({ error: 'Wedding not found' });
@@ -282,22 +282,21 @@ router.post('/:id/checklist/:checklistId/tasks/:taskId/todos', (0, catchAsync_1.
     if (!taskItem) {
         return res.status(404).json({ error: 'Task not found' });
     }
-    const newTodo = {
-        todo: todo,
-        date: date,
-        deadline: deadline,
-        done: done,
+    const newComment = {
+        author: author,
+        text: text,
+        createdAt: createdAt,
     };
-    taskItem.todos.push(newTodo);
+    taskItem.comments.push(newComment);
     await wedding.save();
     res.status(200).json(wedding);
 }));
-router.put('/:id/checklist/:checklistId/tasks/:taskId/todos/:todoId', (0, catchAsync_1.catchAsync)(async (req, res) => {
+router.put('/:id/checklist/:checklistId/tasks/:taskId/comments/:commentId', (0, catchAsync_1.catchAsync)(async (req, res) => {
     const weddingId = req.params.id;
     const checklistId = req.params.checklistId;
     const taskId = req.params.taskId;
     const todoId = req.params.todoId;
-    const { todo, date, deadline, done } = req.body;
+    const { _id, parentId, text, author, authorId, createdAt, updatedAt, } = req.body;
     const wedding = await weddingsModel_1.default.findById(weddingId);
     if (!wedding) {
         return res.status(404).json({ error: 'Wedding not found' });
@@ -310,26 +309,30 @@ router.put('/:id/checklist/:checklistId/tasks/:taskId/todos/:todoId', (0, catchA
     if (!taskItem) {
         return res.status(404).json({ error: 'Task not found' });
     }
-    const todoItem = taskItem.todos.find((item) => { var _a; return ((_a = item._id) === null || _a === void 0 ? void 0 : _a.toString()) === todoId; });
-    if (!todoItem) {
+    const commentsItem = taskItem.comments.find((item) => { var _a; return ((_a = item._id) === null || _a === void 0 ? void 0 : _a.toString()) === todoId; });
+    if (!commentsItem) {
         return res.status(404).json({ error: 'Todo not found' });
     }
-    if (todo)
-        todoItem.todo = todo;
-    if (date)
-        todoItem.date = date;
-    if (deadline)
-        todoItem.deadline = deadline;
-    if (done)
-        todoItem.done = done;
+    if (text)
+        commentsItem.text = text;
+    if (parentId)
+        commentsItem.parentId = parentId;
+    if (author)
+        commentsItem.author = author;
+    if (authorId)
+        commentsItem.authorId = authorId;
+    if (createdAt)
+        commentsItem.createdAt = createdAt;
+    if (updatedAt)
+        commentsItem.updatedAt = updatedAt;
     await wedding.save();
     res.status(200).json(wedding);
 }));
-router.delete('/:id/checklist/:checklistId/tasks/:taskId/todos/:todoId', (0, catchAsync_1.catchAsync)(async (req, res) => {
+router.delete('/:id/checklist/:checklistId/tasks/:taskId/comments/:commentId', (0, catchAsync_1.catchAsync)(async (req, res) => {
     const weddingId = req.params.id;
     const checklistId = req.params.checklistId;
     const taskId = req.params.taskId;
-    const todoId = req.params.todoId;
+    const commentId = req.params.commentId;
     const wedding = await weddingsModel_1.default.findById(weddingId);
     if (!wedding) {
         return res.status(404).json({ error: 'Wedding not found' });
@@ -342,11 +345,11 @@ router.delete('/:id/checklist/:checklistId/tasks/:taskId/todos/:todoId', (0, cat
     if (!taskItem) {
         return res.status(404).json({ error: 'Task not found' });
     }
-    const todoItem = taskItem.todos.find((item) => { var _a; return ((_a = item._id) === null || _a === void 0 ? void 0 : _a.toString()) === todoId; });
+    const todoItem = taskItem.comments.find((item) => { var _a; return ((_a = item._id) === null || _a === void 0 ? void 0 : _a.toString()) === commentId; });
     if (!todoItem) {
         return res.status(404).json({ error: 'Todo not found' });
     }
-    taskItem.todos = taskItem.todos.filter((item) => { var _a; return ((_a = item._id) === null || _a === void 0 ? void 0 : _a.toString()) !== todoId; });
+    taskItem.comments = taskItem.comments.filter((item) => { var _a; return ((_a = item._id) === null || _a === void 0 ? void 0 : _a.toString()) !== commentId; });
     await wedding.save();
     res.status(200).json(wedding);
 }));

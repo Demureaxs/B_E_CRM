@@ -38,7 +38,7 @@ router.get('/:agentId/tasks', async (req, res) => {
                             completedAt: task.completedAt,
                             task: task.task,
                             completed: task.completed,
-                            todos: task.todos,
+                            comments: task.comments,
                             agent: task.agent,
                             agentId: task.agentId,
                             deadline: task.deadline,

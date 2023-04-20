@@ -28,6 +28,10 @@ function WeddingModal(props: WeddingModalProps) {
   } = useContext(WeddingContext);
   const [planner, setPlanner] = useState(wedding?.agent);
 
+  useEffect(() => {
+    setAllWeddings(allWeddings);
+  }, [allWeddings]);
+
   // function to update top level fields in state
   async function updateWeddingsField(
     fieldName: keyof IWedding,

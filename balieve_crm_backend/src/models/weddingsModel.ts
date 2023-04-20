@@ -1,12 +1,14 @@
 import mongoose, { Document, Model, mongo, Schema, Types } from 'mongoose';
 import User from './userModel';
 
-export interface ITodo {
+export interface IComments {
   _id?: Types.ObjectId;
-  todo: string;
-  date?: Date;
-  deadline?: Date;
-  done?: boolean;
+  parentId?: Types.ObjectId;
+  text: string;
+  authorId?: Types.ObjectId;
+  author: String;
+  createdAt: Date;
+  updatedAt?: Date;
 }
 
 export interface ITaskItem {
@@ -18,7 +20,7 @@ export interface ITaskItem {
   agent?: string;
   agentId?: string;
   deadline?: Date | null;
-  todos: ITodo[];
+  comments: IComments[];
 }
 
 export interface IChecklistField {
@@ -59,22 +61,30 @@ export interface IWedding extends Document {
   payments: IPayment[];
 }
 
-const todoSchema: Schema = new mongoose.Schema({
-  todo: {
+const commentsSchema: Schema = new mongoose.Schema({
+  parentId: {
+    type: Schema.Types.ObjectId,
+    default: () => new Types.ObjectId(),
+  },
+  text: {
     type: String,
-    required: [true, 'Please provide a name for the todo.'],
+    required: true,
   },
-  date: {
+  authorId: {
+    type: Schema.Types.ObjectId,
+    ref: User,
+  },
+  author: {
+    type: String,
+    default: Date.now,
+  },
+  createdAt: {
     type: Date,
-    required: [true, 'Please provide a date for the todo.'],
+    default: Date.now,
   },
-  deadline: {
+  updatedAt: {
     type: Date,
-    required: [true, 'Please provide a deadline for the todo.'],
-  },
-  done: {
-    type: Boolean,
-    default: false,
+    default: Date.now,
   },
 });
 
@@ -113,7 +123,7 @@ const TaskSchema: Schema = new mongoose.Schema({
     type: Date,
     default: null,
   },
-  todos: [todoSchema],
+  comments: [commentsSchema],
 });
 
 const checklistSchema: Schema = new mongoose.Schema({

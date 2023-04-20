@@ -11,7 +11,7 @@ import {
 import EditableField from '../WeddingModal/components/common/EditableField';
 
 function Tasks() {
-  const { tasks, fetchTasks } = useContext(WeddingContext);
+  const { tasks, fetchTasks, user } = useContext(WeddingContext);
   const [sortBy, setSortBy] = useState('');
   const [asc, setAsc] = useState(true);
 
@@ -150,6 +150,13 @@ function TaskComponent({
   taskObject,
 }: any) {
   const [deadlineStyle, setDeadlineStyle] = useState('');
+  const [message, setMessage] = useState('');
+
+  const { fetchTasks, user, refetchData } = useContext(WeddingContext);
+
+  useEffect(() => {
+    console.log(taskObject);
+  }, [taskObject]);
 
   useEffect(() => {
     const deadlineDate = new Date(deadline);
@@ -157,54 +164,219 @@ function TaskComponent({
     oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7);
 
     if (deadlineDate < oneWeekFromNow) {
-      setDeadlineStyle('bg-warning/70 text-neutral');
+      setDeadlineStyle('bg-warning/70 text-neutral px-2');
     } else {
       setDeadlineStyle('');
     }
   }, [deadline]);
 
-  function updateTask() {
-    const url = `http://192.168.18.7:8000/api/v1/weddings/${taskObject.weddingId}/checklist/${taskObject.checklistId}/tasks/${taskObject._id}`;
-    console.log(url);
+  async function updateTaskComplete() {
+    if (!window.confirm('Mark as complete?')) return;
+    try {
+      const url = `http://192.168.18.7:8000/api/v1/weddings/${taskObject.weddingId}/checklist/${taskObject.checklistId}/tasks/${taskObject._id}`;
+
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          completed: !taskObject.completed,
+          completedAt: task.completed ? null : new Date(),
+        }),
+      });
+      if (response.ok) {
+        const data = response.json();
+        console.log(data);
+        refetchData();
+        fetchTasks();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function addComment() {
+    try {
+      const url = `http://192.168.18.7:8000/api/v1/weddings/${taskObject.weddingId}/checklist/${taskObject.checklistId}/tasks/${taskObject._id}/comments`;
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          author: 'Sarah Whittaker',
+          createdAt: new Date(),
+          text: message,
+        }),
+      });
+      if (response.ok) {
+        const data = response.json();
+        setMessage('');
+        fetchTasks();
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
-    <div className={`bg-base-100 rounded text-sm`}>
-      <div className='grid grid-cols-4 p-6 font-semibold'>
+    <div className={`bg-base-100 p-6 rounded text-sm`}>
+      <div className='grid grid-cols-4 font-semibold'>
         <h1>{weddingName}</h1>
         <h3>{formatDate(weddingDate)}</h3>
         <h3>{task}</h3>
-        <div className={` ${deadlineStyle} rounded w-fit px-2`}>
+        <div className={` ${deadlineStyle} rounded w-fit`}>
           <EditableField
             value={formatDate(deadline)}
             fieldName='deadline'
             fieldType='date'
-            updateField={updateTask}
+            // updateField={updateTask}
           />
         </div>
         {/* <h3>{formatDate(deadline)}</h3> */}
       </div>
-      <div className='grid grid-cols-4 px-6 font-semibold'>
-        <div className='col-span-3'>
-          <h3>Notes: </h3>
-          <EditableField
-            value={weddingId}
-            fieldName='notes'
-            fieldType='textArea'
-            updateField={updateTask}
-          />
-          {/* <p>{weddingId}</p> */}
+      <hr className='my-4 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-base-300 to-transparent opacity-25 dark:opacity-100' />
+      <div className='grid grid-cols-4 h-full mt-6 font-semibold'>
+        <div className='col-span-3 flex flex-col' style={{ minHeight: '100%' }}>
+          <h3>Comments: </h3>
+          <div className='mr-6 mt-6'>
+            <div className='w-full flex-1 p-3 rounded  bg-base-300'>
+              <div className='h-full w-full space-y-1'>
+                <div className='max-h-64 overflow-y-scroll'>
+                  {taskObject &&
+                    taskObject.comments.map((comment: any) => {
+                      return (
+                        <ChatBubble
+                          _id={comment._id}
+                          parentId={comment.parentId}
+                          text={comment.text}
+                          createdAt={comment.createdAt}
+                          authorId={comment.authorId}
+                          author={comment.author}
+                          updatedAt={comment.updatedAt}
+                          weddingId={taskObject.weddingId}
+                          chatStart={true}
+                          taskObject={taskObject}
+                        />
+                      );
+                    })}
+                </div>
+              </div>
+
+              <div className='col-span-3 rounded-sm overflow-hidden mt-6'>
+                <div className='flex'>
+                  <input
+                    value={message}
+                    onChange={(event) => {
+                      if (event.target instanceof HTMLInputElement) {
+                        setMessage(event.target.value);
+                      }
+                    }}
+                    onKeyPress={(event) => {
+                      if (event.key === 'Enter') {
+                        addComment();
+                      }
+                    }}
+                    type='textArea'
+                    placeholder='Message...'
+                    className='w-full h-6 font-normal placeholder:text-neutral-content/50 focus:outline-none px-2 focus:border-b focus:border-info text-sm placeholder:text-xs'
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div className='space-y-6 mb-6'>
           <h3>Mark As Complete: </h3>
           <button
-            onClick={updateTask}
-            className='bg-success/80 text-neutral px-2 py-1 rounded flex items-center'
+            onClick={updateTaskComplete}
+            className='bg-success/80 text-neutral text-xs px-2 py-1 rounded flex items-center'
           >
             Complete
           </button>
         </div>
       </div>
+    </div>
+  );
+}
+
+interface ChatBubbleProps {
+  _id: string;
+  parentId: string;
+  text: string;
+  authorId: string;
+  author: string;
+  createdAt: Date;
+  updatedAt: Date;
+  chatStart: boolean;
+  weddingId: string;
+  taskObject: any;
+}
+
+function ChatBubble({
+  author,
+  text,
+  createdAt,
+  chatStart,
+  authorId,
+  updatedAt,
+  taskObject,
+  _id,
+}: ChatBubbleProps) {
+  const [editing, setEditing] = useState(false);
+  const { fetchTasks, refetchData } = useContext(WeddingContext);
+
+  async function deleteComment() {
+    try {
+      const url = `http://192.168.18.7:8000/api/v1/weddings/${taskObject.weddingId}/checklist/${taskObject.checklistId}/tasks/${taskObject._id}/comments/${_id}`;
+
+      const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        console.log('Comment deleted successfully');
+        fetchTasks();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  return (
+    <div className='flex items-center'>
+      <div
+        id={_id}
+        onClick={(event) => setEditing(!editing)}
+        className={`chat ${
+          chatStart ? 'chat-start' : 'chat-end'
+        } items-center space-y-1 flex-1`}
+      >
+        <div className='chat-image avatar'>
+          {/* <div className='w-10 rounded-full'> */}
+          {/* <img src='/images/stock/photo-1534528741775-53994a69daeb.jpg' /> */}
+          {/* </div> */}
+        </div>
+        <div className='chat-header text-xs'>
+          {author}
+          <time className='text-xs opacity-50'>{}</time>
+        </div>
+        <div className='chat-bubble text-xs flex items-center'>{text}</div>
+        <div className='chat-footer opacity-50 text-xs'>Seen</div>
+      </div>
+      {editing && (
+        <button
+          onClick={deleteComment}
+          className='bg-error/80 text-neutral rounded px-2 py-1 text-xs'
+        >
+          delete
+        </button>
+      )}
     </div>
   );
 }

@@ -105,8 +105,9 @@ function ChecklistItems(props: any) {
 
   return (
     <div id={props.tasks._id} className='space-y-2 flex-1 ml-9'>
-      <div className='flex space-x-4 text-sm'>
+      <div className='flex space-x-4 text-sm items-center'>
         <input
+          className=' h-3 w-3 text-info checked:bg-warning'
           type='checkbox'
           name={props.tasks.task}
           id={props.tasks.task._id}

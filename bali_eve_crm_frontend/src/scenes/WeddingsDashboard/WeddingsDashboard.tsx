@@ -181,7 +181,7 @@ function WeddingsDashboard({ searchTerm, setSearchTerm }: IDashboardProps) {
       <div className='flex-1 overflow-y-scroll scrollbar-none'>
         {/* Render all weddings */}
         {allWeddings &&
-          sortWeddings([...allWeddings], sortBy, asc)
+          sortWeddings(allWeddings, sortBy, asc)
             .filter((wedding) =>
               searchTerm
                 ? wedding.name

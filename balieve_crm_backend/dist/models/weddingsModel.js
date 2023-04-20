@@ -28,22 +28,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const userModel_1 = __importDefault(require("./userModel"));
-const todoSchema = new mongoose_1.default.Schema({
-    todo: {
+const commentsSchema = new mongoose_1.default.Schema({
+    parentId: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        default: () => new mongoose_1.Types.ObjectId(),
+    },
+    text: {
         type: String,
-        required: [true, 'Please provide a name for the todo.'],
+        required: true,
     },
-    date: {
+    authorId: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: userModel_1.default,
+    },
+    author: {
+        type: String,
+        default: Date.now,
+    },
+    createdAt: {
         type: Date,
-        required: [true, 'Please provide a date for the todo.'],
+        default: Date.now,
     },
-    deadline: {
+    updatedAt: {
         type: Date,
-        required: [true, 'Please provide a deadline for the todo.'],
-    },
-    done: {
-        type: Boolean,
-        default: false,
+        default: Date.now,
     },
 });
 const TaskSchema = new mongoose_1.default.Schema({
@@ -81,7 +89,7 @@ const TaskSchema = new mongoose_1.default.Schema({
         type: Date,
         default: null,
     },
-    todos: [todoSchema],
+    comments: [commentsSchema],
 });
 const checklistSchema = new mongoose_1.default.Schema({
     type: {

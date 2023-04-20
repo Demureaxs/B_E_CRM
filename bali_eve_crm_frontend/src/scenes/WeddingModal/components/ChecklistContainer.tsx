@@ -10,8 +10,8 @@ function ChecklistContainer(props: any) {
   const [hideComplete, setHideComplete] = useState(false);
   const [percentage, setPercentage] = useState(0);
 
-  const { refetchData } = useContext(WeddingContext);
-  const { wedding, setWedding } = useContext(WeddingContext);
+  const { wedding, setWedding, refetchData, fetchTasks } =
+    useContext(WeddingContext);
 
   useEffect(() => {
     const completedTasks = props.task.tasks.filter(
@@ -101,6 +101,7 @@ function ChecklistContainer(props: any) {
         console.log('Task Deleted');
         const updatedWedding = await response.json();
         setWedding(updatedWedding);
+        fetchTasks();
         refetchData();
       } else {
         console.log('Failed to delete task');

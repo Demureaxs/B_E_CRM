@@ -1,12 +1,14 @@
 import { createContext } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 
-export interface ITodo {
+export interface IComments {
   _id?: string;
-  todo: string;
-  date?: Date;
-  deadline?: Date;
-  done?: boolean;
+  parentId?: string;
+  text: string;
+  authorId: string;
+  author?: String;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface ITaskItem {
@@ -18,7 +20,7 @@ export interface ITaskItem {
   agent?: string;
   agentId?: string;
   deadline?: Date | null;
-  todos: ITodo[];
+  comments: IComments[];
 }
 
 export interface IChecklistField {
@@ -74,7 +76,7 @@ export interface IAgentTask {
   completedAt: Date | null;
   task: string;
   completed: boolean;
-  todos: ITodo[];
+  comments: IComments[];
   agent: string;
   agentId: string;
   deadline?: Date;

@@ -53,10 +53,10 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 app.get('/', authorizeUser, (req: Request, res: Response) => {
   console.log('Authorize user Middleware has been executed successfully');
-  res.sendFile(path.join(__dirname, '../../balieve_crm_vite/dist/index.html'));
+  res.sendFile(path.join(__dirname, '../../bali_eve_crm_frontend/dist/index.html'));
 });
 
-app.use(express.static(path.join(__dirname, '../../balieve_crm_vite/dist')));
+app.use(express.static(path.join(__dirname, '../../bali_eve_crm_frontend/dist')));
 
 app.use('/api/v1/weddings', /* authorizeUser, */ weddingRoutes);
 app.use('/api/v1/agents', agentRoutes);
