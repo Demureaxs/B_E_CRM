@@ -17,6 +17,7 @@ function InlineNav({ name, imageLink, searchTerm, setSearchTerm }: any) {
                 setSearchTerm(event.target.value);
               }
             }}
+            onBlur={() => setSearchTerm('')}
             className='input input-bordered'
           />
         </div>

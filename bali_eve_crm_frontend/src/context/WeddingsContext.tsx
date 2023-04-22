@@ -80,7 +80,7 @@ export interface IAgentTask {
   comments: IComments[];
   agent: string;
   agentId: string;
-  deadline?: Date;
+  deadline: Date;
   weddingId: string;
   weddingName: string;
   weddingDate: Date;
@@ -121,7 +121,7 @@ export function WeddingsProvider(props: any) {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [user, setUser] = useState<IUser | null>(null);
   const [agents, setAgents] = useState<IUser[]>([]);
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState<IAgentTask[]>([]);
 
   // useEffect(() => {
   //   async function fetchUser() {
@@ -131,9 +131,7 @@ export function WeddingsProvider(props: any) {
   //   }
   //   fetchUser();
   // }, []);
-
-  // ----------------------------------------------------------------Need to fix env and local----------------------------------------------------------------
-
+ 
   async function fetchTasks() {
     const res = await fetch(
       `${API_URL}/api/v1/agents/643e3ee3250aa44438b09464/tasks`

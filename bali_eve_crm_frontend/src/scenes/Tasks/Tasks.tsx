@@ -10,10 +10,16 @@ import {
 } from '../WeddingsDashboard/WeddingsDashboard';
 import EditableField from '../WeddingModal/components/common/EditableField';
 import API_URL from '../../env';
+import { IComments, ITaskItem } from '../../context/WeddingsContext';
 
-function Tasks() {
+interface ITaskProps {
+  searchTerm: string;
+  setSearchTerm: (value: string) => void;
+}
+
+function Tasks({ searchTerm, setSearchTerm }: ITaskProps) {
   const { tasks, fetchTasks, user } = useContext(WeddingContext);
-  const [sortBy, setSortBy] = useState('');
+  const [sortBy, setSortBy] = useState('deadline');
   const [asc, setAsc] = useState(true);
 
   return (
@@ -122,24 +128,67 @@ function Tasks() {
 
       <div className='flex-1 overflow-y-scroll scrollbar-none'>
         {tasks &&
-          tasks.map((task) => {
-            return (
-              <div key={task._id}>
-                <TaskComponent
-                  weddingName={task.weddingName}
-                  weddingDate={task.weddingDate}
-                  task={task.task}
-                  deadline={task.deadline}
-                  weddingId={task.weddingId}
-                  taskObject={task}
-                />
-                <hr className='my-4 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-base-100 to-transparent opacity-25 dark:opacity-100' />
-              </div>
-            );
-          })}
+          sortTasks(tasks as any, sortBy, asc)
+            .filter((task) => {
+              return searchTerm
+                ? task.weddingName
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase()) ||
+                    task.task.toLowerCase().includes(searchTerm.toLowerCase())
+                : true;
+            })
+            .map((task) => {
+              return (
+                <div key={task._id}>
+                  <TaskComponent
+                    weddingName={task.weddingName}
+                    weddingDate={task.weddingDate}
+                    task={task.task}
+                    deadline={task.deadline}
+                    weddingId={task.weddingId}
+                    taskObject={task}
+                  />
+                  <hr className='my-4 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-base-100 to-transparent opacity-25 dark:opacity-100' />
+                </div>
+              );
+            })}
       </div>
     </section>
   );
+}
+
+function sortTasks(tasks: IAgentTask[], sortBy: string, asc: boolean) {
+  return tasks.sort((a: IAgentTask, b: IAgentTask) => {
+    switch (sortBy) {
+      case 'name':
+        return asc
+          ? a.weddingName.localeCompare(b.weddingName)
+          : b.weddingName.localeCompare(a.weddingName);
+        break;
+      case 'date':
+        return asc
+          ? new Date(a.weddingDate).getTime() -
+              new Date(b.weddingDate).getTime()
+          : new Date(b.weddingDate).getTime() -
+              new Date(a.weddingDate).getTime();
+        break;
+      case 'task':
+        return asc
+          ? a.task.localeCompare(b.task)
+          : b.task.localeCompare(a.task);
+        break;
+      case 'deadline':
+        return asc
+          ? new Date(a.deadline).getTime() - new Date(b.deadline).getTime()
+          : new Date(b.deadline).getTime() - new Date(a.deadline).getTime();
+        break;
+      default:
+        return asc
+          ? new Date(a.deadline).getTime() - new Date(b.deadline).getTime()
+          : new Date(b.deadline).getTime() - new Date(a.deadline).getTime();
+        break;
+    }
+  });
 }
 
 function TaskComponent({
@@ -160,11 +209,14 @@ function TaskComponent({
   }, [taskObject]);
 
   useEffect(() => {
+    const currentDate = new Date();
     const deadlineDate = new Date(deadline);
     const oneWeekFromNow = new Date();
-    oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7);
+    oneWeekFromNow.setDate(currentDate.getDate() + 7);
 
-    if (deadlineDate < oneWeekFromNow) {
+    if (deadlineDate < currentDate) {
+      setDeadlineStyle('bg-error/70 text-neutral px-2');
+    } else if (deadlineDate <= oneWeekFromNow) {
       setDeadlineStyle('bg-warning/70 text-neutral px-2');
     } else {
       setDeadlineStyle('');

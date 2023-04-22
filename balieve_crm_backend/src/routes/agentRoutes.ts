@@ -18,7 +18,7 @@ import {
   updateWedding,
 } from '../controllers/weddingsController';
 
-interface IAgentTask {
+export interface IAgentTask {
   _id: Types.ObjectId;
   createdAt: Date;
   completedAt: Date | null;
@@ -27,7 +27,7 @@ interface IAgentTask {
   comments: IComments[];
   agent: string;
   agentId: string;
-  deadline?: Date;
+  deadline: Date;
   weddingId: Types.ObjectId;
   weddingName: string;
   weddingDate: Date;

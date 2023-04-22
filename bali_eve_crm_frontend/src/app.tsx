@@ -43,7 +43,12 @@ export function App() {
                     setSearchTerm={setSearchTerm}
                   />
                 )}
-                {navTarget === 'Tasks' && <Tasks />}
+                {navTarget === 'Tasks' && (
+                  <Tasks
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                  />
+                )}
                 {navTarget === 'Payments' && <PaymentTimeline />}
                 {navTarget === 'Add_Wedding' && <AddWedding />}
                 {navTarget === 'Edit_Wedding' && <EditWedding />}
