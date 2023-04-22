@@ -5,6 +5,7 @@ import produce from 'immer';
 import { lazy } from 'preact/compat';
 import WeddingModal from '../WeddingModal/WeddingModal';
 import ProgressComponent from '../../common/compinents/ProgressComponent';
+import API_URL from '../../env';
 
 // const WeddingsModal = lazy(() => import("./WeddingsModal"));
 interface IDashboardProps {
@@ -33,7 +34,7 @@ function WeddingsDashboard({ searchTerm, setSearchTerm }: IDashboardProps) {
       const selectedId = target.closest('.weddingContainer')?.id;
       if (selectedId) setCurrentId(selectedId);
 
-      const url = `http://192.168.18.7:8000/api/v1/weddings/${selectedId}`;
+      const url = `${API_URL}/api/v1/weddings/${selectedId}`;
       const response = await fetch(url);
       const data = await response.json();
       setWedding(data);
@@ -42,7 +43,7 @@ function WeddingsDashboard({ searchTerm, setSearchTerm }: IDashboardProps) {
   }
 
   async function refetchWedding() {
-    const url = `http://192.168.18.7:8000/api/v1/weddings/${currentId}`;
+    const url = `${API_URL}/api/v1/weddings/${currentId}`;
     const response = await fetch(url);
     const data = await response.json();
     setWedding(data);

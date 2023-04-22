@@ -1,5 +1,6 @@
 import { createContext } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
+import API_URL from '../env';
 
 export interface IComments {
   _id?: string;
@@ -135,7 +136,7 @@ export function WeddingsProvider(props: any) {
 
   async function fetchTasks() {
     const res = await fetch(
-      'http://192.168.18.7:8000/api/v1/agents/643e3ee3250aa44438b09464/tasks'
+      `${API_URL}/api/v1/agents/643e3ee3250aa44438b09464/tasks`
     );
     const tasks = await res.json();
     setTasks(tasks);
@@ -146,7 +147,7 @@ export function WeddingsProvider(props: any) {
   }, []);
 
   async function fetchAgents() {
-    const response = await fetch('http://192.168.18.7:8000/api/v1/users');
+    const response = await fetch(`${API_URL}/api/v1/users`);
     const data = await response.json();
     setAgents(data);
   }
@@ -158,7 +159,7 @@ export function WeddingsProvider(props: any) {
 
   useEffect(() => {
     async function fetchWeddings() {
-      const response = await fetch('http://192.168.18.7:8000/api/v1/weddings');
+      const response = await fetch(`${API_URL}/api/v1/weddings`);
 
       const data = await response.json();
       setAllWeddings(data);
@@ -167,7 +168,7 @@ export function WeddingsProvider(props: any) {
   }, []);
 
   async function fetchWeddings() {
-    const response = await fetch('http://192.168.18.7:8000/api/v1/weddings');
+    const response = await fetch(`${API_URL}/api/v1/weddings`);
     const data = await response.json();
     setAllWeddings(data);
   }

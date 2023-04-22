@@ -3,6 +3,7 @@ import { WeddingContext } from '../../../context/WeddingsContext';
 import produce from 'immer';
 import { saveWedding } from '../weddingModalUtils';
 import { formatDateToShortForm } from '../../../common/utilities/utilityFunctions';
+import API_URL from '../../../env';
 
 function ChecklistItems(props: any) {
   const [showTodos, setShowTodos] = useState(false);
@@ -34,7 +35,7 @@ function ChecklistItems(props: any) {
       completedAt: task.completed ? null : new Date(),
     };
 
-    const url = `http://192.168.18.7:8000/api/v1/weddings/${wedding._id}/checklist/${wedding.checklist[checklistIndex]._id}/tasks/${props.tasks._id}`;
+    const url = `${API_URL}/api/v1/weddings/${wedding._id}/checklist/${wedding.checklist[checklistIndex]._id}/tasks/${props.tasks._id}`;
 
     try {
       const response = await fetch(url, {
@@ -77,7 +78,7 @@ function ChecklistItems(props: any) {
       deadline: deadline,
     };
 
-    const url = `http://192.168.18.7:8000/api/v1/weddings/${wedding._id}/checklist/${wedding.checklist[checklistIndex]._id}/tasks/${props.tasks._id}`;
+    const url = `${API_URL}/api/v1/weddings/${wedding._id}/checklist/${wedding.checklist[checklistIndex]._id}/tasks/${props.tasks._id}`;
 
     try {
       const response = await fetch(url, {

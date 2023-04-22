@@ -9,6 +9,7 @@ import {
   HeaderFieldsProps,
 } from '../WeddingsDashboard/WeddingsDashboard';
 import EditableField from '../WeddingModal/components/common/EditableField';
+import API_URL from '../../env';
 
 function Tasks() {
   const { tasks, fetchTasks, user } = useContext(WeddingContext);
@@ -173,7 +174,7 @@ function TaskComponent({
   async function updateTaskComplete() {
     if (!window.confirm('Mark as complete?')) return;
     try {
-      const url = `http://192.168.18.7:8000/api/v1/weddings/${taskObject.weddingId}/checklist/${taskObject.checklistId}/tasks/${taskObject._id}`;
+      const url = `${API_URL}/api/v1/weddings/${taskObject.weddingId}/checklist/${taskObject.checklistId}/tasks/${taskObject._id}`;
 
       const response = await fetch(url, {
         method: 'PUT',
@@ -198,7 +199,7 @@ function TaskComponent({
 
   async function addComment() {
     try {
-      const url = `http://192.168.18.7:8000/api/v1/weddings/${taskObject.weddingId}/checklist/${taskObject.checklistId}/tasks/${taskObject._id}/comments`;
+      const url = `${API_URL}/api/v1/weddings/${taskObject.weddingId}/checklist/${taskObject.checklistId}/tasks/${taskObject._id}/comments`;
 
       const response = await fetch(url, {
         method: 'POST',
@@ -265,7 +266,7 @@ function TaskComponent({
                 </div>
               </div>
 
-              <div className='col-span-3 rounded-sm overflow-hidden mt-6'>
+              <div className='col-span-3 rounded overflow-hidden mt-6'>
                 <div className='flex'>
                   <input
                     value={message}
@@ -281,7 +282,7 @@ function TaskComponent({
                     }}
                     type='textArea'
                     placeholder='Message...'
-                    className='w-full h-6 font-normal placeholder:text-neutral-content/50 focus:outline-none px-2 focus:border-b focus:border-info text-sm placeholder:text-xs'
+                    className='w-full h-6 font-normal placeholder:text-neutral-content/50 focus:outline-none p-3 focus:border-b focus:border-info text-sm placeholder:text-xs'
                   />
                 </div>
               </div>
@@ -330,7 +331,7 @@ function ChatBubble({
 
   async function deleteComment() {
     try {
-      const url = `http://192.168.18.7:8000/api/v1/weddings/${taskObject.weddingId}/checklist/${taskObject.checklistId}/tasks/${taskObject._id}/comments/${_id}`;
+      const url = `${API_URL}/api/v1/weddings/${taskObject.weddingId}/checklist/${taskObject.checklistId}/tasks/${taskObject._id}/comments/${_id}`;
 
       const response = await fetch(url, {
         method: 'DELETE',

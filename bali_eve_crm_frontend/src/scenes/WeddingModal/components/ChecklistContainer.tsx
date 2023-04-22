@@ -5,6 +5,7 @@ import ProgressComponent from '../../../common/compinents/ProgressComponent';
 import EditableField from './common/EditableField';
 import ChecklistItems from './ChecklistItem';
 import { saveWedding } from '../weddingModalUtils';
+import API_URL from '../../../env';
 
 function ChecklistContainer(props: any) {
   const [hideComplete, setHideComplete] = useState(false);
@@ -27,7 +28,7 @@ function ChecklistContainer(props: any) {
   async function updateChecklistField(field: string, newValue: string) {
     if (!wedding) return;
 
-    const url = `http://192.168.18.7:8000/api/v1/weddings/${wedding._id}/checklist/${props.task._id}`;
+    const url = `${API_URL}/api/v1/weddings/${wedding._id}/checklist/${props.task._id}`;
 
     try {
       const response = await fetch(url, {
@@ -55,7 +56,7 @@ function ChecklistContainer(props: any) {
 
   async function addChecklistItem(event: MouseEvent) {
     if (wedding) {
-      const url = `http://192.168.18.7:8000/api/v1/weddings/${wedding._id}/checklist/${props.task._id}/tasks`;
+      const url = `${API_URL}/api/v1/weddings/${wedding._id}/checklist/${props.task._id}/tasks`;
 
       try {
         const response = await fetch(url, {
@@ -87,7 +88,7 @@ function ChecklistContainer(props: any) {
   async function deleteChecklistItem(taskIndex: number) {
     if (!wedding) return;
 
-    const url = `http://192.168.18.7:8000/api/v1/weddings/${wedding._id}/checklist/${props.task._id}/tasks/${props.task.tasks[taskIndex]._id}`;
+    const url = `${API_URL}/api/v1/weddings/${wedding._id}/checklist/${props.task._id}/tasks/${props.task.tasks[taskIndex]._id}`;
 
     try {
       const response = await fetch(url, {
@@ -114,7 +115,7 @@ function ChecklistContainer(props: any) {
   async function deleteChecklistContainer() {
     if (!wedding) return;
 
-    const url = `http://192.168.18.7:8000/api/v1/weddings/${wedding._id}/checklist/${props.task._id}`;
+    const url = `${API_URL}/api/v1/weddings/${wedding._id}/checklist/${props.task._id}`;
 
     try {
       const response = await fetch(url, {

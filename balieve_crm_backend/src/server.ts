@@ -51,12 +51,19 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-app.get('/', authorizeUser, (req: Request, res: Response) => {
-  console.log('Authorize user Middleware has been executed successfully');
-  res.sendFile(path.join(__dirname, '../../bali_eve_crm_frontend/dist/index.html'));
-});
+app.get(
+  '/',
+  /* authorizeUser, */ (req: Request, res: Response) => {
+    console.log('Authorize user Middleware has been executed successfully');
+    res.sendFile(
+      // path.join(__dirname, '../../bali_eve_crm_frontend/dist/index.html')
+      path.join(__dirname, '../frontend-assets/index.html')
+    );
+  }
+);
 
-app.use(express.static(path.join(__dirname, '../../bali_eve_crm_frontend/dist')));
+// app.use(express.static(path.join(__dirname, '../../bali_eve_crm_frontend/dist')));
+app.use(express.static(path.join(__dirname, '../frontend-assets')));
 
 app.use('/api/v1/weddings', /* authorizeUser, */ weddingRoutes);
 app.use('/api/v1/agents', agentRoutes);
@@ -93,7 +100,7 @@ app.get('/login', (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, '../../balieve_crm_vite/dist/login.html'));
 });
 
-const PORT = process.env.port || 8000;
+const PORT = process.env.port || 8080;
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });

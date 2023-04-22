@@ -6,6 +6,7 @@ import produce from 'immer';
 import EditableField from './components/common/EditableField';
 import ChecklistContainer from './components/ChecklistContainer';
 import { formatDate } from '../../common/utilities/utilityFunctions';
+import API_URL from '../../env';
 
 interface WeddingModalProps {
   wedding: IWedding | null;
@@ -39,7 +40,7 @@ function WeddingModal(props: WeddingModalProps) {
   ) {
     if (!wedding) return;
 
-    const url = `http://192.168.18.7:8000/api/v1/weddings/${wedding._id}`;
+    const url = `${API_URL}/api/v1/weddings/${wedding._id}`;
 
     let requestBody: Partial<IWedding> = { [fieldName]: newValue };
 
@@ -76,7 +77,7 @@ function WeddingModal(props: WeddingModalProps) {
   async function addChecklistContainer() {
     if (!wedding) return;
 
-    const url = `http://192.168.18.7:8000/api/v1/weddings/${wedding._id}/checklist`;
+    const url = `${API_URL}/api/v1/weddings/${wedding._id}/checklist`;
 
     try {
       const response = await fetch(url, {
@@ -113,7 +114,7 @@ function WeddingModal(props: WeddingModalProps) {
   async function handleDeleteWedding() {
     if (!window.confirm('Are you sure you want to delete?')) return;
     try {
-      const url = `http://192.168.18.7:8000/api/v1/weddings/${wedding?._id}`;
+      const url = `${API_URL}/api/v1/weddings/${wedding?._id}`;
       const response = await fetch(url, {
         method: 'DELETE',
         headers: {

@@ -1,10 +1,11 @@
 import { WeddingContext } from '../../context/WeddingsContext';
 import { useContext } from 'preact/hooks';
+import API_URL from '../../env';
 
 export async function saveWedding(wedding: any) {
   if (!wedding) return;
 
-  const url = `http://192.168.18.7:8000/api/v1/weddings/${wedding._id}`;
+  const url = `${API_URL}/api/v1/weddings/${wedding._id}`;
 
   try {
     const response = await fetch(url, {

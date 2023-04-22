@@ -14,7 +14,6 @@ const weddingRoutes_1 = __importDefault(require("./routes/weddingRoutes"));
 const agentRoutes_1 = __importDefault(require("./routes/agentRoutes"));
 const compression_1 = __importDefault(require("compression"));
 const express_session_1 = __importDefault(require("express-session"));
-const authorizeUser_1 = require("./utilities/authorizeUser");
 const userModel_1 = __importDefault(require("./models/userModel"));
 dotenv_1.default.config({ path: path_1.default.join(__dirname, '../.env') });
 require("./models/userModel");
@@ -43,11 +42,15 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     next();
 });
-app.get('/', authorizeUser_1.authorizeUser, (req, res) => {
+app.get('/', 
+/* authorizeUser, */ (req, res) => {
     console.log('Authorize user Middleware has been executed successfully');
-    res.sendFile(path_1.default.join(__dirname, '../../bali_eve_crm_frontend/dist/index.html'));
+    res.sendFile(
+    // path.join(__dirname, '../../bali_eve_crm_frontend/dist/index.html')
+    path_1.default.join(__dirname, '../frontend-assets/index.html'));
 });
-app.use(express_1.default.static(path_1.default.join(__dirname, '../../bali_eve_crm_frontend/dist')));
+// app.use(express.static(path.join(__dirname, '../../bali_eve_crm_frontend/dist')));
+app.use(express_1.default.static(path_1.default.join(__dirname, '../frontend-assets')));
 app.use('/api/v1/weddings', /* authorizeUser, */ weddingRoutes_1.default);
 app.use('/api/v1/agents', agentRoutes_1.default);
 // need to export these functions to their relevant routes
@@ -79,7 +82,7 @@ app.post('/api/v1/users', async (req, res) => {
 app.get('/login', (req, res) => {
     res.sendFile(path_1.default.join(__dirname, '../../balieve_crm_vite/dist/login.html'));
 });
-const PORT = process.env.port || 8000;
+const PORT = process.env.port || 8080;
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
 });

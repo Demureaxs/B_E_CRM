@@ -1,6 +1,7 @@
 import { useContext, useState } from 'preact/hooks';
 import { useEffect } from 'preact/hooks';
 import { IUser, WeddingContext } from '../../context/WeddingsContext';
+import API_URL from '../../env';
 
 function AddWedding() {
   const [planner, setPlanner] = useState('');
@@ -40,7 +41,7 @@ function AddWedding() {
     };
 
     try {
-      const url = `http://192.168.18.7:8000/api/v1/weddings`;
+      const url = `${API_URL}/api/v1/weddings`;
 
       const response = await fetch(url, {
         method: 'POST',
