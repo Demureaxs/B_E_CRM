@@ -2,13 +2,22 @@ import { Request, Response, NextFunction } from 'express';
 import { IWedding } from '../models/weddingsModel';
 import Wedding from '../models/weddingsModel';
 import mongoose from 'mongoose';
+import User from '../models/userModel';
 
 export async function getWeddings(req: Request, res: Response): Promise<void> {
-  const query = req.query;
-  if (Object.keys(query).length === 0) {
+  const agentId = req.query.agentId;
+  const user = await User.findById(agentId);
+
+  if (user?.role === 'admin') {
     const weddings = await Wedding.find({});
     res.status(200).json(weddings);
-    return;
+  } else if (user?.role === 'agent') {
+    const weddings = await Wedding.find({
+      agentId,
+    });
+    res.status(200).json(weddings);
+  } else {
+    res.status(400).send('Sorry you are not authorized to access this');
   }
 }
 

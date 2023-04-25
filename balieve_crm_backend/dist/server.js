@@ -14,7 +14,9 @@ const weddingRoutes_1 = __importDefault(require("./routes/weddingRoutes"));
 const agentRoutes_1 = __importDefault(require("./routes/agentRoutes"));
 const compression_1 = __importDefault(require("compression"));
 const express_session_1 = __importDefault(require("express-session"));
+const authorizeUser_1 = require("./utilities/authorizeUser");
 const userModel_1 = __importDefault(require("./models/userModel"));
+const connect_mongodb_session_1 = __importDefault(require("connect-mongodb-session"));
 dotenv_1.default.config({ path: path_1.default.join(__dirname, '../.env') });
 require("./models/userModel");
 require("./services/passport");
@@ -23,11 +25,17 @@ app.use((0, compression_1.default)());
 mongoose_1.default.connect(process.env.MONGO_URI, () => {
     console.log('Mongoose Connected');
 });
+const Store = (0, connect_mongodb_session_1.default)(express_session_1.default);
+const mongoStore = new Store({
+    uri: process.env.MONGO_URI,
+    collection: 'sessions',
+});
 app.use((0, express_session_1.default)({
     secret: process.env.COOKIE_KEY,
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 },
+    store: mongoStore,
 }));
 app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
@@ -42,8 +50,7 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     next();
 });
-app.get('/', 
-/* authorizeUser, */ (req, res) => {
+app.get('/', authorizeUser_1.authorizeUser, (req, res) => {
     console.log('Authorize user Middleware has been executed successfully');
     res.sendFile(
     // path.join(__dirname, '../../bali_eve_crm_frontend/dist/index.html')
@@ -51,7 +58,7 @@ app.get('/',
 });
 // app.use(express.static(path.join(__dirname, '../../bali_eve_crm_frontend/dist')));
 app.use(express_1.default.static(path_1.default.join(__dirname, '../frontend-assets')));
-app.use('/api/v1/weddings', /* authorizeUser, */ weddingRoutes_1.default);
+app.use('/api/v1/weddings', authorizeUser_1.authorizeUser, weddingRoutes_1.default);
 app.use('/api/v1/agents', agentRoutes_1.default);
 // need to export these functions to their relevant routes
 app.get('/api/v1/users', async (req, res) => {
@@ -79,9 +86,10 @@ app.post('/api/v1/users', async (req, res) => {
         res.status(500).json({ message: 'Error Creating User' });
     }
 });
-app.get('/login', (req, res) => {
-    res.sendFile(path_1.default.join(__dirname, '../../balieve_crm_vite/dist/login.html'));
-});
+//checking if this is causing an error
+// app.get('/login', (req: Request, res: Response) => {
+//   res.sendFile(path.join(__dirname, '../frontend-assets/login.html'));
+// });
 const PORT = process.env.port || 8080;
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);

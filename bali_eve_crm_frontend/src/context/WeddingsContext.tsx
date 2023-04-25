@@ -125,51 +125,66 @@ export function WeddingsProvider(props: any) {
 
   // useEffect(() => {
   //   async function fetchUser() {
-  //     const res = await fetch('http://192.168.18.7:8000/api/v1/current_user');
+  //     const res = await fetch('http://192.168.18.7:8080/api/v1/current_user');
   //     const user = await res.json();
   //     setUser(user);
   //   }
   //   fetchUser();
   // }, []);
- 
+
+  // fetch the current user
+  async function getCurrentUser() {
+    const response = await fetch(`${API_URL}/api/v1/current_user`);
+    // const response = await fetch(`${API_URL}/api/v1/agents`);
+    const data = await response.json();
+    setUser(data);
+    // setUser(data[5]);
+  }
+
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      console.log(user);
+      fetchWeddings();
+    }
+  }, [user]);
+
+  async function fetchWeddings() {
+    if (user) {
+      const response = await fetch(
+        `${API_URL}/api/v1/weddings?agentId=${user._id}`
+      );
+      const data = await response.json();
+      setAllWeddings(data);
+    }
+  }
+
   async function fetchTasks() {
-    const res = await fetch(
-      `${API_URL}/api/v1/agents/643e3ee3250aa44438b09464/tasks`
-    );
-    const tasks = await res.json();
-    setTasks(tasks);
+    if (user) {
+      const response = await fetch(
+        `${API_URL}/api/v1/agents/${user._id}/tasks`
+      );
+      const tasks = await response.json();
+      setTasks(tasks);
+    }
   }
 
   useEffect(() => {
     fetchTasks();
-  }, []);
+  }, [user]);
 
   async function fetchAgents() {
-    const response = await fetch(`${API_URL}/api/v1/users`);
+    const response = await fetch(`${API_URL}/api/v1/agents`);
     const data = await response.json();
     setAgents(data);
   }
 
   useEffect(() => {
     fetchAgents();
-    console.log(agents);
   }, []);
-
-  useEffect(() => {
-    async function fetchWeddings() {
-      const response = await fetch(`${API_URL}/api/v1/weddings`);
-
-      const data = await response.json();
-      setAllWeddings(data);
-    }
-    fetchWeddings();
-  }, []);
-
-  async function fetchWeddings() {
-    const response = await fetch(`${API_URL}/api/v1/weddings`);
-    const data = await response.json();
-    setAllWeddings(data);
-  }
 
   const contextValue: WeddingsContextValue = {
     allWeddings,

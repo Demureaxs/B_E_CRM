@@ -5,12 +5,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteWedding = exports.updateWedding = exports.createWedding = exports.getWedding = exports.getWeddings = void 0;
 const weddingsModel_1 = __importDefault(require("../models/weddingsModel"));
+const userModel_1 = __importDefault(require("../models/userModel"));
 async function getWeddings(req, res) {
-    const query = req.query;
-    if (Object.keys(query).length === 0) {
+    const agentId = req.query.agentId;
+    const user = await userModel_1.default.findById(agentId);
+    if ((user === null || user === void 0 ? void 0 : user.role) === 'admin') {
         const weddings = await weddingsModel_1.default.find({});
         res.status(200).json(weddings);
-        return;
+    }
+    else if ((user === null || user === void 0 ? void 0 : user.role) === 'agent') {
+        const weddings = await weddingsModel_1.default.find({
+            agentId,
+        });
+        res.status(200).json(weddings);
+    }
+    else {
+        res.status(400).send('Sorry you are not authorized to access this');
     }
 }
 exports.getWeddings = getWeddings;

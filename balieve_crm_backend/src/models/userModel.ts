@@ -10,6 +10,10 @@ export interface IUser extends Document {
 }
 
 const userSchema = new mongoose.Schema({
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    default: () => new Types.ObjectId(),
+  },
   role: {
     type: String,
     enum: ['admin', 'agent', 'user'],

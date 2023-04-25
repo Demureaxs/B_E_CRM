@@ -1,14 +1,14 @@
 import { useState, useContext, useEffect } from 'preact/hooks';
 import { WeddingContext } from '../../../context/WeddingsContext';
-import produce from 'immer';
-import { saveWedding } from '../weddingModalUtils';
 import { formatDateToShortForm } from '../../../common/utilities/utilityFunctions';
 import API_URL from '../../../env';
 
 function ChecklistItems(props: any) {
-  const [showTodos, setShowTodos] = useState(false);
   const [editingName, setEditingName] = useState(false);
   const [hovering, setHovering] = useState(false);
+  const [planner, setPlanner] = useState(props.tasks.agent);
+  const [deadline, setDeadline] = useState(props.tasks.deadline);
+  const [taskName, setTaskName] = useState(props.tasks.task);
   const {
     wedding,
     setWedding,
@@ -18,16 +18,6 @@ function ChecklistItems(props: any) {
     agents,
     fetchTasks,
   } = useContext(WeddingContext);
-
-  const [task, setTask] = useState('');
-  const [planner, setPlanner] = useState(props.tasks.agent);
-  const [deadline, setDeadline] = useState(props.tasks.deadline);
-
-  const [taskName, setTaskName] = useState(props.tasks.task);
-
-  useEffect(() => {
-    console.log(taskName);
-  }, [taskName]);
 
   async function updateWeddingChecklist(
     checklistIndex: number,
@@ -65,7 +55,7 @@ function ChecklistItems(props: any) {
   }
 
   async function updateChecklistTask(
-    event: any,
+    // event: any,
     checklistIndex: number,
     taskIndex: number
   ) {
@@ -74,12 +64,10 @@ function ChecklistItems(props: any) {
     const plannerId = agents.find(
       (agent) => agent.displayName === planner
     )?._id;
-
-    console.log(props.tasks);
     const task = wedding.checklist[checklistIndex].tasks[taskIndex];
     const updatedTask = {
       ...task,
-      task: event.target.value,
+      task: taskName,
       agent: planner,
       agentId: plannerId,
       deadline: deadline,
@@ -101,6 +89,7 @@ function ChecklistItems(props: any) {
         setWedding(updatedWedding);
         fetchTasks();
         refetchData();
+        setHovering(false);
       }
     } catch (err) {
       console.log(err);
@@ -127,20 +116,11 @@ function ChecklistItems(props: any) {
             <h3 className='text-xs'>Task:</h3>
             <input
               type='text'
-              value={props.tasks.task}
+              value={taskName}
               className=' flex-1 text-sm px-1 w-full focus:outline-none focus:border-b focus:border-blue-600'
-              onBlur={(event) => {
-                updateChecklistTask(
-                  event,
-                  props.checklistIndex,
-                  props.taskIndex
-                );
-                setEditingName(false);
-              }}
-              onKeyPress={(event) => {
-                if (event.key === 'Enter') {
-                  event.currentTarget.blur();
-                }
+              onChange={(event) => {
+                if (event.target instanceof HTMLInputElement)
+                  setTaskName(event.target.value);
               }}
             />
 
@@ -193,8 +173,23 @@ function ChecklistItems(props: any) {
               </div>
             </div>
             <div className='pt-2 flex-1 flex justify-end gap-3 text-xs text-neutral'>
-              <button className='bg-success/80 px-2 py-1 rounded'>Save</button>
-              <button className='bg-error/80 px-2 py-1 rounded'>Delete</button>
+              <button
+                onClick={() => {
+                  updateChecklistTask(props.checklistIndex, props.taskIndex);
+                  setEditingName(false);
+                }}
+                className='bg-success/80 px-2 py-1 rounded'
+              >
+                Save
+              </button>
+              <button
+                onClick={() => {
+                  props.deleteChecklistItem;
+                }}
+                className='bg-error/80 px-2 py-1 rounded'
+              >
+                Delete
+              </button>
             </div>
           </div>
         ) : (
@@ -215,12 +210,12 @@ function ChecklistItems(props: any) {
                 viewBox='0 0 24 24'
                 stroke-width='1.5'
                 stroke='currentColor'
-                class='w-3 h-3'
+                class='w-4 h-4'
               >
                 <path
                   stroke-linecap='round'
                   stroke-linejoin='round'
-                  d='M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125'
+                  d='M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10'
                 />
               </svg>
             )}

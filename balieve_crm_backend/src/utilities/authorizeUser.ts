@@ -11,8 +11,9 @@ export const authorizeUser = (
   res: Response,
   next: NextFunction
 ): void => {
-  if (!req.session?.passport || !req.session.passport.user) {
-    return res.redirect('/login');
-  }
+  // also commenting out!
+  // if (!req.session?.passport || !req.session.passport.user) {
+  //   return res.redirect('/login');
+  // }
   next();
 };

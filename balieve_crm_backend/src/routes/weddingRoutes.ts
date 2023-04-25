@@ -487,6 +487,7 @@ router.post(
       author: author!,
       text: text!,
       createdAt: createdAt!,
+      authorId: authorId,
     };
 
     taskItem.comments.push(newComment);

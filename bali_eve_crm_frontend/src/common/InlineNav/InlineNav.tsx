@@ -1,4 +1,27 @@
+import { useContext, useEffect } from 'preact/hooks';
+import { WeddingContext } from '../../context/WeddingsContext';
+import API_URL from '../../env';
+
 function InlineNav({ name, imageLink, searchTerm, setSearchTerm }: any) {
+  const { user } = useContext(WeddingContext);
+
+  async function handleLogout() {
+    try {
+      const response = await fetch(`${API_URL}/api/v1/logout`);
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Succeesfully logged out');
+        window.location.href = '/';
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    console.log(user?.photo);
+  }, [user]);
+
   return (
     <div className='navbar bg-base-100'>
       <div className='flex-1'>
@@ -25,7 +48,7 @@ function InlineNav({ name, imageLink, searchTerm, setSearchTerm }: any) {
           <label tabIndex={0} className='btn btn-ghost btn-circle avatar'>
             <div className='w-10 rounded-full border border-base-300'>
               {/* Needs updating when layout done for the current user */}
-              <img src={imageLink} />
+              <img src={user?.photo} referrerpolicy='no-referrer' />
             </div>
           </label>
           <ul
@@ -41,7 +64,7 @@ function InlineNav({ name, imageLink, searchTerm, setSearchTerm }: any) {
             <li>
               <a>Settings</a>
             </li>
-            <li>
+            <li onClick={handleLogout}>
               <a>Logout</a>
             </li>
           </ul>

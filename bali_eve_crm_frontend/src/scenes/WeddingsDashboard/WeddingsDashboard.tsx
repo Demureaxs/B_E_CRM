@@ -22,6 +22,7 @@ function WeddingsDashboard({ searchTerm, setSearchTerm }: IDashboardProps) {
     showModal,
     setShowModal,
     agents,
+    user,
   } = useContext(WeddingContext);
   const [sortBy, setSortBy] = useState('date');
   const [asc, setAsc] = useState(true);
@@ -201,7 +202,7 @@ function WeddingsDashboard({ searchTerm, setSearchTerm }: IDashboardProps) {
                   >
                     <div className='grid grid-cols-5 p-6 font-semibold'>
                       <h1>{wedding.name}</h1>
-                      <a href='#'>{wedding.email}</a>
+                      <a>{wedding.email}</a>
                       <h1>{formatDate(wedding.date)}</h1>
                       <h1>{wedding.agent}</h1>
                       <div className=' flex items-center space-x-4'>

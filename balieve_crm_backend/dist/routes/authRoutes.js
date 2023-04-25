@@ -21,7 +21,7 @@ function authRoutes(app) {
         });
     });
     app.get('/api/v1/current_user', (req, res) => {
-        res.send(req.user);
+        res.json(req.user);
     });
 }
 exports.default = authRoutes;

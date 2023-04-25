@@ -22,6 +22,10 @@ function Tasks({ searchTerm, setSearchTerm }: ITaskProps) {
   const [sortBy, setSortBy] = useState('deadline');
   const [asc, setAsc] = useState(true);
 
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
   return (
     <section className='flex flex-col h-full'>
       <div className='grid grid-cols-4 text-sm font-bold border-b border-base-300 mb-4 p-6'>
@@ -204,9 +208,9 @@ function TaskComponent({
 
   const { fetchTasks, user, refetchData } = useContext(WeddingContext);
 
-  useEffect(() => {
-    console.log(taskObject);
-  }, [taskObject]);
+  // useEffect(() => {
+  //   console.log(taskObject);
+  // }, [taskObject]);
 
   useEffect(() => {
     const currentDate = new Date();
@@ -259,7 +263,7 @@ function TaskComponent({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          author: 'Sarah Whittaker',
+          author: user?.displayName,
           createdAt: new Date(),
           text: message,
         }),
@@ -310,7 +314,9 @@ function TaskComponent({
                           author={comment.author}
                           updatedAt={comment.updatedAt}
                           weddingId={taskObject.weddingId}
-                          chatStart={true}
+                          chatStart={
+                            comment.author === user?.displayName ? false : true
+                          }
                           taskObject={taskObject}
                         />
                       );
@@ -379,7 +385,7 @@ function ChatBubble({
   _id,
 }: ChatBubbleProps) {
   const [editing, setEditing] = useState(false);
-  const { fetchTasks, refetchData } = useContext(WeddingContext);
+  const { fetchTasks, refetchData, user } = useContext(WeddingContext);
 
   async function deleteComment() {
     try {
@@ -427,7 +433,7 @@ function ChatBubble({
           onClick={deleteComment}
           className='bg-error/80 text-neutral rounded px-2 py-1 text-xs'
         >
-          delete
+          Delete
         </button>
       )}
     </div>

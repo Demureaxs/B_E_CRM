@@ -286,6 +286,7 @@ router.post('/:id/checklist/:checklistId/tasks/:taskId/comments', (0, catchAsync
         author: author,
         text: text,
         createdAt: createdAt,
+        authorId: authorId,
     };
     taskItem.comments.push(newComment);
     await wedding.save();

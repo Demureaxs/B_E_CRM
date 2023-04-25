@@ -27,6 +27,6 @@ export default function authRoutes(app: any): void {
   });
 
   app.get('/api/v1/current_user', (req: Request, res: Response) => {
-    res.send(req.user);
+    res.json(req.user);
   });
 }
