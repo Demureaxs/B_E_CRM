@@ -52,12 +52,12 @@ app.use((req, res, next) => {
 });
 app.get('/', authorizeUser_1.authorizeUser, (req, res) => {
     console.log('Authorize user Middleware has been executed successfully');
-    res.sendFile(
-    // path.join(__dirname, '../../bali_eve_crm_frontend/dist/index.html')
-    path_1.default.join(__dirname, '../frontend-assets/index.html'));
+    res.sendFile(path_1.default.join(__dirname, '../../bali_eve_crm_frontend/dist/index.html')
+    // path.join(__dirname, '../frontend-assets/index.html')
+    );
 });
-// app.use(express.static(path.join(__dirname, '../../bali_eve_crm_frontend/dist')));
-app.use(express_1.default.static(path_1.default.join(__dirname, '../frontend-assets')));
+app.use(express_1.default.static(path_1.default.join(__dirname, '../../bali_eve_crm_frontend/dist')));
+// app.use(express.static(path.join(__dirname, '../frontend-assets')));
 app.use('/api/v1/weddings', authorizeUser_1.authorizeUser, weddingRoutes_1.default);
 app.use('/api/v1/agents', agentRoutes_1.default);
 // need to export these functions to their relevant routes

@@ -18,10 +18,6 @@ function InlineNav({ name, imageLink, searchTerm, setSearchTerm }: any) {
     }
   }
 
-  useEffect(() => {
-    console.log(user?.photo);
-  }, [user]);
-
   return (
     <div className='navbar bg-base-100'>
       <div className='flex-1'>

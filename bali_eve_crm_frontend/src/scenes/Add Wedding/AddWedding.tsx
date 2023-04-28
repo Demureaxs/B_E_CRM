@@ -1,6 +1,5 @@
 import { useContext, useState } from 'preact/hooks';
-import { useEffect } from 'preact/hooks';
-import { IUser, WeddingContext } from '../../context/WeddingsContext';
+import { WeddingContext } from '../../context/WeddingsContext';
 import API_URL from '../../env';
 
 function AddWedding() {
@@ -56,20 +55,20 @@ function AddWedding() {
 
         console.log('Wedding Saved');
         refetchData();
+        setPlanner('');
+        setName('');
+        setBudget(0);
+        setEmail('');
+        setDate('');
+        setVenue('');
+        setGuests(0);
+        setFoodAndBeverage('');
+        setDecoration('');
+        setProduction('');
+        setVideographer('');
+        setPhotographer('');
+        setVendorProgress('');
       }
-      setPlanner('');
-      setName('');
-      setBudget(0);
-      setEmail('');
-      setDate('');
-      setVenue('');
-      setGuests(0);
-      setFoodAndBeverage('');
-      setDecoration('');
-      setProduction('');
-      setVideographer('');
-      setPhotographer('');
-      setVendorProgress('');
     } catch (err) {
       console.log(err);
     }

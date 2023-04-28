@@ -1,10 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { IWedding } from '../models/weddingsModel';
 import Wedding from '../models/weddingsModel';
-import mongoose from 'mongoose';
 import User from '../models/userModel';
 
-export async function getWeddings(req: Request, res: Response): Promise<void> {
+export async function getWeddings(req: Request, res: Response) {
   const agentId = req.query.agentId;
   const user = await User.findById(agentId);
 
@@ -21,22 +20,14 @@ export async function getWeddings(req: Request, res: Response): Promise<void> {
   }
 }
 
-export async function getWedding(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function getWedding(req: Request, res: Response) {
   const id = req.params.id;
 
   const wedding = await Wedding.findById(id);
   res.status(200).json(wedding);
 }
 
-export async function createWedding(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function createWedding(req: Request, res: Response) {
   const {
     agent,
     agentId,
@@ -80,11 +71,7 @@ export async function createWedding(
   res.json(newWedding);
 }
 
-export async function updateWedding(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function updateWedding(req: Request, res: Response) {
   const id = req.params.id;
   const {
     agent,

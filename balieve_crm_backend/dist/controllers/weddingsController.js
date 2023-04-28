@@ -24,13 +24,13 @@ async function getWeddings(req, res) {
     }
 }
 exports.getWeddings = getWeddings;
-async function getWedding(req, res, next) {
+async function getWedding(req, res) {
     const id = req.params.id;
     const wedding = await weddingsModel_1.default.findById(id);
     res.status(200).json(wedding);
 }
 exports.getWedding = getWedding;
-async function createWedding(req, res, next) {
+async function createWedding(req, res) {
     const { agent, agentId, name, email, date, budget, venue, guests, foodAndBeverage, decoration, production, photographer, videographer, vendorProgress, checklist, payments, } = req.body;
     const newWedding = new weddingsModel_1.default({
         agent,
@@ -55,7 +55,7 @@ async function createWedding(req, res, next) {
     res.json(newWedding);
 }
 exports.createWedding = createWedding;
-async function updateWedding(req, res, next) {
+async function updateWedding(req, res) {
     const id = req.params.id;
     const { agent, agentId, name, email, date, budget, venue, guests, foodAndBeverage, decoration, production, photographer, videographer, vendorProgress, checklist, payments, } = req.body;
     const wedding = await weddingsModel_1.default.findByIdAndUpdate(id);

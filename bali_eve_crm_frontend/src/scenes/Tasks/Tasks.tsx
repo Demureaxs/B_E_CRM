@@ -1,7 +1,6 @@
 import { useState, useContext, useEffect } from 'preact/hooks';
 import {
   formatDate,
-  formatDateToShortForm,
 } from '../../common/utilities/utilityFunctions';
 import { WeddingContext, IAgentTask } from '../../context/WeddingsContext';
 import {

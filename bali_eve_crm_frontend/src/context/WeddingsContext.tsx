@@ -123,16 +123,6 @@ export function WeddingsProvider(props: any) {
   const [agents, setAgents] = useState<IUser[]>([]);
   const [tasks, setTasks] = useState<IAgentTask[]>([]);
 
-  // useEffect(() => {
-  //   async function fetchUser() {
-  //     const res = await fetch('http://192.168.18.7:8080/api/v1/current_user');
-  //     const user = await res.json();
-  //     setUser(user);
-  //   }
-  //   fetchUser();
-  // }, []);
-
-  // fetch the current user
   async function getCurrentUser() {
     const response = await fetch(`${API_URL}/api/v1/current_user`);
     // const response = await fetch(`${API_URL}/api/v1/agents`);
@@ -147,7 +137,6 @@ export function WeddingsProvider(props: any) {
 
   useEffect(() => {
     if (user) {
-      console.log(user);
       fetchWeddings();
     }
   }, [user]);

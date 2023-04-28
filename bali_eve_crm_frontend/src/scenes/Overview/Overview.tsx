@@ -1,8 +1,5 @@
 import { useContext, useEffect, useState } from 'preact/hooks';
 import { IWedding, WeddingContext } from '../../context/WeddingsContext';
-import { formatDate } from '../../common/utilities/utilityFunctions';
-import { SortNearestThreeByDate } from './overviewUtils';
-
 import StatCard from './components/StatCard';
 import WeddingCardMini from './components/WeddingCardMini';
 
@@ -106,6 +103,17 @@ function Overview() {
       );
     }
   }, [allWeddings]);
+
+  function SortNearestThreeByDate(wedding: IWedding[]) {
+    return wedding
+      .slice()
+      .sort((a: IWedding, b: IWedding) => {
+        return new Date(a.date).getTime() - new Date(b.date).getTime();
+      })
+      .filter((wedding: IWedding, index: any) => {
+        return index < 3;
+      });
+  }
 
   return (
     <div className='h-full w-full space-y-6'>
